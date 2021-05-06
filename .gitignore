@@ -1,0 +1,7 @@
+.idea
+
+# builds
+dd-divorce.exe
+
+# environment files
+.env
