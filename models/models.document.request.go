@@ -1,8 +1,8 @@
 package models
 
 type DocumentRequest struct {
-	Iin      string
-	Services map[string]ServiceDTO
+	Iin             string
+	Services        map[string]ServiceDTO
 	DocumentTypeDto `json:"documentType"`
 }
 

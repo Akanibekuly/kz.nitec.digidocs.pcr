@@ -2,6 +2,7 @@
 
 # builds
 dd-divorce.exe
+main.exe
 
 # environment files
 .env

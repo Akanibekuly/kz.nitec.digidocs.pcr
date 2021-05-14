@@ -13,8 +13,8 @@ import (
 )
 
 type App struct {
-	Config 	*config.MainConfig
-	DB 		*sql.DB
+	Config *config.MainConfig
+	DB     *sql.DB
 	Router *gin.Engine
 
 	Pcr models.PcrRepository
@@ -64,11 +64,11 @@ func (a *App) getConnection() (*sql.DB, error) {
 	return db, err
 }
 
-func (a *App) setRoutes(){
-	pcr:=a.Router.Group("/digilocker/pcr-cert/api")
+func (a *App) setRoutes() {
+	pcr := a.Router.Group("/digilocker/pcr-cert/api")
 	{
-		pcr.POST("/pcr-result",a.Process)
-		pcr.GET("/ping",a.Ping)
+		pcr.POST("/pcr-result", a.Process)
+		pcr.GET("/ping", a.Ping)
 	}
 }
 

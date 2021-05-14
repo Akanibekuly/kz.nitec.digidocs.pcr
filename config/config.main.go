@@ -4,7 +4,8 @@ package config
 
 type MainConfig struct {
 	App *AppConf
-	DB *DBConf
+	DB  *DBConf
+	Shep *Shep
 	// TODO: add if need more configs
 }
 
@@ -25,6 +26,12 @@ type (
 		Password string
 		DBName   string
 	}
+
+	Shep struct {
+		ShepEndpoint string
+		SenderLogin string
+		SenderPassword string
+	}
 )
 
 func GetConfig() *MainConfig {
@@ -41,8 +48,10 @@ func GetConfig() *MainConfig {
 			Password: getVarEnvAsStr("", ""),
 			DBName:   getVarEnvAsStr("", ""),
 		},
+		Shep: &Shep{
+			ShepEndpoint: getVarEnvAsStr("SHEP_ENDPOINT",""),
+			SenderLogin: getVarEnvAsStr("SENDER_LOGIN",""),
+			SenderPassword: getVarEnvAsStr("SENDER_PASSWORD",""),
+		},
 	}
 }
-
-
-

@@ -2,12 +2,6 @@ package models
 
 import "encoding/xml"
 
-const (
-	ENVELOPE           = "Envelope"
-	ENVELOP_SCHEMA     = "http://schemas.xmlsoap.org/soap/envelope/"
-	SEND_MESSAGE_XMLNS = "http://bip.bee.kz/SyncChannel/v10/Types"
-)
-
 type Data struct {
 	Text     string `xml:",chardata"`
 	Ns6      string `xml:"xmlns:ns6,attr"`

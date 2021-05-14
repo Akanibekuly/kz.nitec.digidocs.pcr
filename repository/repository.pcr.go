@@ -7,7 +7,7 @@ type PcrRepository struct {
 }
 
 func PcrRepositoryInit(db *sql.DB) *PcrRepository {
-	return &PcrRepository{ db: db}
+	return &PcrRepository{db: db}
 }
 
 func (d *PcrRepository) Mock() {}
