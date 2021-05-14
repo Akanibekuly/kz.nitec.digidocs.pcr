@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"dd-pcr/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"kz.nitec.digidocs.pcr/models"
 	"net/http"
 )
 
@@ -18,8 +18,4 @@ func (a *App) Process(c *gin.Context) {
 	}
 
 	c.XML(http.StatusOK, data)
-}
-
-func (a *App) Ping(c *gin.Context) {
-	c.String(200, "Pong")
 }

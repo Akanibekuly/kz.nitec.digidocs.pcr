@@ -1,18 +1,14 @@
 package config
 
-// TODO: IDP problem with auth. How we can auth-ze request? Current ios/android app don't send any auth-token/sso
-
 type MainConfig struct {
-	App *AppConf
-	DB  *DBConf
+	App  *AppConf
+	DB   *DBConf
 	Shep *Shep
-	// TODO: add if need more configs
 }
 
 type (
 	// AppConf represents ...
 	AppConf struct {
-		// TODO: add if need more configs
 		Mode string
 		Port string
 	}
@@ -28,9 +24,11 @@ type (
 	}
 
 	Shep struct {
-		ShepEndpoint string
-		SenderLogin string
+		ShepEndpoint   string
+		SenderLogin    string
 		SenderPassword string
+		ShepLogin      string
+		ShepPassword   string
 	}
 )
 
@@ -41,17 +39,19 @@ func GetConfig() *MainConfig {
 			Port: getVarEnvAsStr("APP__PORT", "8080"),
 		},
 		DB: &DBConf{
-			Dialect:  getVarEnvAsStr("", ""),
-			Host:     getVarEnvAsStr("", ""),
-			Port:     getVarEnvAsInt("", 0),
-			Username: getVarEnvAsStr("", ""),
-			Password: getVarEnvAsStr("", ""),
-			DBName:   getVarEnvAsStr("", ""),
+			Dialect:  getVarEnvAsStr("DB_DIALECT", ""),
+			Host:     getVarEnvAsStr("DB_HOST", ""),
+			Port:     getVarEnvAsInt("DB_PORT", 0),
+			Username: getVarEnvAsStr("DB_LOGIN", ""),
+			Password: getVarEnvAsStr("DB_PASSWORD", ""),
+			DBName:   getVarEnvAsStr("DB_NAME", ""),
 		},
 		Shep: &Shep{
-			ShepEndpoint: getVarEnvAsStr("SHEP_ENDPOINT",""),
-			SenderLogin: getVarEnvAsStr("SENDER_LOGIN",""),
-			SenderPassword: getVarEnvAsStr("SENDER_PASSWORD",""),
+			ShepEndpoint:   getVarEnvAsStr("SHEP_ENDPOINT", ""),
+			SenderLogin:    getVarEnvAsStr("SENDER_LOGIN", ""),
+			SenderPassword: getVarEnvAsStr("SENDER_PASSWORD", ""),
+			ShepLogin:      getVarEnvAsStr("SHEP_LOGIN", ""),
+			ShepPassword:   getVarEnvAsStr("SHEP_PASSWORD", ""),
 		},
 	}
 }

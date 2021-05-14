@@ -3,10 +3,11 @@ package handler
 import (
 	"context"
 	"database/sql"
-	"dd-pcr/config"
-	"dd-pcr/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"kz.nitec.digidocs.pcr/config"
+	"kz.nitec.digidocs.pcr/models"
+	"kz.nitec.digidocs.pcr/repository"
 	"log"
 	"net/http"
 	"time"
@@ -28,12 +29,12 @@ func (a *App) Initialize(conf *config.MainConfig) {
 	a.Router.Use(gin.Logger())
 	a.Router.Use(gin.Recovery())
 	a.setRoutes()
-	//db, err := a.getConnection()
-	//if err != nil {
-	//	log.Printf("could not connect to db")
-	//	return
-	//}
-	//a.Pcr = repository.PcrRepositoryInit(db)
+	db, err := a.getConnection()
+	if err != nil {
+		log.Printf("could not connect to db")
+		return
+	}
+	a.Pcr = repository.PcrRepositoryInit(db)
 }
 
 func (a *App) getConnection() (*sql.DB, error) {
@@ -49,9 +50,7 @@ func (a *App) getConnection() (*sql.DB, error) {
 			a.Config.DB.Password,
 			a.Config.DB.DBName,
 		)
-
 		db, err = sql.Open(a.Config.DB.Dialect, dbURI)
-		// TODO: need to add ping DB?
 
 	case "mysql":
 		// TODO:
@@ -68,7 +67,6 @@ func (a *App) setRoutes() {
 	pcr := a.Router.Group("/digilocker/pcr-cert/api")
 	{
 		pcr.POST("/pcr-result", a.Process)
-		pcr.GET("/ping", a.Ping)
 	}
 }
 

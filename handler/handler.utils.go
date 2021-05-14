@@ -2,28 +2,28 @@ package handler
 
 import (
 	"bytes"
-	"dd-pcr/models"
 	"encoding/xml"
 	"github.com/google/uuid"
 	"io/ioutil"
+	"kz.nitec.digidocs.pcr/models"
 	"log"
 	"net/http"
 	"time"
 )
 
 const (
-	ENVELOPE           = "Envelope"
-	ENVELOP_SCHEMA     = "http://schemas.xmlsoap.org/soap/envelope/"
-	SEND_MESSAGE_XMLNS = "http://bip.bee.kz/SyncChannel/v10/Types"
+	ENVELOPE             = "Envelope"
+	ENVELOP_SCHEMA       = "http://schemas.xmlsoap.org/soap/envelope/"
+	SEND_MESSAGE_XMLNS   = "http://bip.bee.kz/SyncChannel/v10/Types"
 	COVID_RESPONSE_XLMNS = "http://api.nce.kz/SyncChannel/v1/Types/CovidResponse"
-	DIGILOCKER_XLMNS = "http://digilocker.gov.kz/documentResponse/type/pcrcert"
-	COVID_REQUEST_XLMNS = "http://api.nce.kz/SyncChannel/v1/Types/CovidRequest"
-	XSI_XMLNS_SCEMA = "http://www.w3.org/2001/XMLSchema-instance"
-	COVID_REQUEST_TYPE = "ns6:CovidRequest"
+	DIGILOCKER_XLMNS     = "http://digilocker.gov.kz/documentResponse/type/pcrcert"
+	COVID_REQUEST_XLMNS  = "http://api.nce.kz/SyncChannel/v1/Types/CovidRequest"
+	XSI_XMLNS_SCEMA      = "http://www.w3.org/2001/XMLSchema-instance"
+	COVID_REQUEST_TYPE   = "ns6:CovidRequest"
 )
 
 func (a *App) SendMessage(docRequest models.DocumentRequest) (models.EnvelopeResponse, error) {
-	service:=docRequest.Services["PCR_CERTIFICATE"]
+	service := docRequest.Services["PCR_CERTIFICATE"]
 	envelope := models.EnvelopeRequest{
 		XMLName: xml.Name{Local: ENVELOPE},
 		Text:    "",
@@ -62,26 +62,26 @@ func (a *App) SendMessage(docRequest models.DocumentRequest) (models.EnvelopeRes
 		},
 	}
 
-	shepResponse:=&models.EnvelopeResponse{}
+	shepResponse := &models.EnvelopeResponse{}
 	b, err := xml.Marshal(envelope)
 	if err != nil {
-		return *shepResponse,err
+		return *shepResponse, err
 	}
 	req, err := http.NewRequest(http.MethodPost, a.Config.Shep.ShepEndpoint, bytes.NewBuffer(b))
 	if err != nil {
-		return *shepResponse,err
+		return *shepResponse, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return *shepResponse,err
+		return *shepResponse, err
 	}
 
 	response, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("could not read response body")
-		return *shepResponse,err
+		return *shepResponse, err
 	}
 
 	err = xml.Unmarshal(response, &shepResponse)

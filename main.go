@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"dd-pcr/config"
-	"dd-pcr/handler"
+	"kz.nitec.digidocs.pcr/config"
+	"kz.nitec.digidocs.pcr/handler"
 	"log"
 	"os"
 	"os/signal"
