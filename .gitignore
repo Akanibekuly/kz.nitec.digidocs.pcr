@@ -6,3 +6,4 @@ main.exe
 
 # environment files
 .env
+.local_env

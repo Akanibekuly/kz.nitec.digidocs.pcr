@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
 	"kz.nitec.digidocs.pcr/models"
@@ -83,6 +84,8 @@ func (a *App) SendMessage(docRequest models.DocumentRequest) (models.EnvelopeRes
 		log.Println("could not read response body")
 		return *shepResponse, err
 	}
+
+	fmt.Printf("xml resdponse: %+v", response)
 
 	err = xml.Unmarshal(response, &shepResponse)
 	if err != nil {
