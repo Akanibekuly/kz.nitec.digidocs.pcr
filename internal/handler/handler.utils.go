@@ -3,6 +3,7 @@ package handler
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
 	models2 "kz.nitec.digidocs.pcr/internal/models"
@@ -86,7 +87,7 @@ func (a *App) SendMessage(docRequest *models2.DocumentRequest) (*models2.Envelop
 
 	err = xml.Unmarshal(response, &shepResponse)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 
 	return shepResponse, nil

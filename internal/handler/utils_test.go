@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/xml"
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	config3 "kz.nitec.digidocs.pcr/internal/config"
 	models2 "kz.nitec.digidocs.pcr/internal/models"
@@ -30,12 +31,17 @@ func Mock() http.Handler {
 		}
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(""))
+		s := ""
+		i, err := w.Write([]byte(s))
+		if err != nil || i != len(s) {
+			return
+		}
 	})
 	return r
 }
 
 func TestApp_SendMessage(t *testing.T) {
+	assert := assert.New(t)
 	config := config3.GetConfig()
 	srv := httptest.NewServer(Mock())
 	defer srv.Close()
@@ -45,22 +51,29 @@ func TestApp_SendMessage(t *testing.T) {
 		Config: config,
 	}
 	serviceDTO := models2.ServiceDTO{
-		Code:      "PCR_CERTIFICATE",
+		Code:      "PcrCertificate",
 		ServiceId: "CovidResult",
 		Url:       "http://localhost:8095/pcr-cert",
 	}
 	documentDTO := models2.DocumentTypeDto{
-		Code:   "",
-		NameEn: "",
-		NameKk: "",
-		NameRu: "",
+		Code:   "PcrCertificate",
+		NameEn: "The Result of PCR testing on COVID-19",
+		NameKk: "COVID-19-ға тестілеу бойынша ПТР нәтижесі",
+		NameRu: "Результат ПЦР тестирования на COVID-19",
 	}
 	cases := []struct {
-		iin           string
-		err           error
-		expectedError error
+		iin    string
+		err    error
+		expErr error
+		expResult *models2.EnvelopeResponse
 	}{
-		{iin: "950110350170"},
+		{
+			iin: "950110350170",
+			err: nil,
+			expResult: &models2.EnvelopeResponse{
+
+			},
+		},
 	}
 
 	for _, v := range cases {
@@ -72,9 +85,7 @@ func TestApp_SendMessage(t *testing.T) {
 			DocumentTypeDto: documentDTO,
 		}
 		response, err := app.SendMessage(&request)
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(response)
+		assert.Equal(err, v.expErr)
+		assert.Equal(response, v.expResult)
 	}
 }
