@@ -3,10 +3,9 @@ package handler
 import (
 	"bytes"
 	"encoding/xml"
-	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
-	"kz.nitec.digidocs.pcr/models"
+	models2 "kz.nitec.digidocs.pcr/internal/models"
 	"log"
 	"net/http"
 	"time"
@@ -23,33 +22,33 @@ const (
 	COVID_REQUEST_TYPE   = "ns6:CovidRequest"
 )
 
-func (a *App) SendMessage(docRequest models.DocumentRequest) (models.EnvelopeResponse, error) {
+func (a *App) SendMessage(docRequest *models2.DocumentRequest) (*models2.EnvelopeResponse, error) {
 	service := docRequest.Services["PCR_CERTIFICATE"]
-	envelope := models.EnvelopeRequest{
+	envelope := models2.EnvelopeRequest{
 		XMLName: xml.Name{Local: ENVELOPE},
 		Text:    "",
 		Xmlns:   ENVELOP_SCHEMA,
-		Body: &models.BodyRequest{
+		Body: &models2.BodyRequest{
 			Text: "",
-			SendMessage: &models.SendMessageRequest{
+			SendMessage: &models2.SendMessageRequest{
 				Text: "",
 				Ns2:  SEND_MESSAGE_XMLNS,
 				Ns3:  COVID_RESPONSE_XLMNS,
 				Ns4:  DIGILOCKER_XLMNS,
-				Req: &models.Request{
+				Req: &models2.Request{
 					Text: "",
-					ReqInfo: &models.RequestInfo{
+					ReqInfo: &models2.RequestInfo{
 						MessageId:   uuid.New().String(),
 						MessageDate: time.Now().Format("2006-01-02T15:04:05Z07:00"),
 						ServiceId:   service.ServiceId,
-						Sender: &models.SenderCred{
+						Sender: &models2.SenderCred{
 							SenderId: a.Config.Shep.SenderLogin,
 							Password: a.Config.Shep.SenderPassword,
 						},
 					},
-					ReqData: &models.RequestData{
+					ReqData: &models2.RequestData{
 						Text: "",
-						Data: &models.Data{
+						Data: &models2.Data{
 							Ns6:      COVID_REQUEST_XLMNS,
 							Xsi:      XSI_XMLNS_SCEMA,
 							Type:     COVID_REQUEST_TYPE,
@@ -63,34 +62,32 @@ func (a *App) SendMessage(docRequest models.DocumentRequest) (models.EnvelopeRes
 		},
 	}
 
-	shepResponse := &models.EnvelopeResponse{}
+	shepResponse := &models2.EnvelopeResponse{}
 	b, err := xml.Marshal(envelope)
 	if err != nil {
-		return *shepResponse, err
+		return shepResponse, err
 	}
 	req, err := http.NewRequest(http.MethodPost, a.Config.Shep.ShepEndpoint, bytes.NewBuffer(b))
 	if err != nil {
-		return *shepResponse, err
+		return shepResponse, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return *shepResponse, err
+		return shepResponse, err
 	}
 
 	response, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("could not read response body")
-		return *shepResponse, err
+		return shepResponse, err
 	}
-
-	fmt.Printf("xml resdponse: %+v", response)
 
 	err = xml.Unmarshal(response, &shepResponse)
 	if err != nil {
 		log.Println(err)
 	}
 
-	return *shepResponse, nil
+	return shepResponse, nil
 }

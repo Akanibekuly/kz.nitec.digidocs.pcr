@@ -3,7 +3,7 @@ package models
 type DocumentRequest struct {
 	Iin             string
 	Services        map[string]ServiceDTO
-	DocumentTypeDto `json:"documentType"`
+	DocumentTypeDto DocumentTypeDto `json:"documentType"`
 }
 
 type ServiceDTO struct {

@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"kz.nitec.digidocs.pcr/config"
-	"kz.nitec.digidocs.pcr/handler"
+	config2 "kz.nitec.digidocs.pcr/internal/config"
+	handler2 "kz.nitec.digidocs.pcr/internal/handler"
 	"log"
 	"os"
 	"os/signal"
@@ -13,15 +13,15 @@ import (
 )
 
 func init() {
-	if err := godotenv.Load(".env",".local_env"); err != nil {
+	if err := godotenv.Load("./../build/.env", "./../build/.local_env"); err != nil {
 		log.Print("No .env file found")
 	}
 }
 
 func main() {
-	conf := config.GetConfig()
+	conf := config2.GetConfig()
 
-	app := &handler.App{}
+	app := &handler2.App{}
 	app.Initialize(conf)
 
 	ctx, cancel := context.WithCancel(context.Background())

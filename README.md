@@ -1,3 +1,3 @@
 # dd-divorce
 
-Task starts with code pattern dd-divorce-{{task_num}}
+Task starts with code pattern pcr-certificate-{{task_num}}

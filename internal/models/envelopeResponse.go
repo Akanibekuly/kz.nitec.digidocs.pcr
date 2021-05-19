@@ -5,15 +5,17 @@ import "encoding/xml"
 type EnvelopeResponse struct {
 	XMLName xml.Name `xml:"Envelope"`
 	Text    string   `xml:",chardata"`
+	Soap    string   `xml:"soap,attr"`
 	Xsd     string   `xml:"xsd,attr"`
 	Xsi     string   `xml:"xsi,attr"`
-	S       string   `xml:"s,attr"`
-	Body    struct {
+	Header  struct {
+		Text    string `xml:",chardata"`
+		SOAPENV string `xml:"SOAP-ENV,attr"`
+	} `xml:"Header"`
+	Body struct {
 		Text                string `xml:",chardata"`
 		SendMessageResponse struct {
 			Text     string `xml:",chardata"`
-			Xsi      string `xml:"xsi,attr"`
-			Xsd      string `xml:"xsd,attr"`
 			Xmlns    string `xml:"xmlns,attr"`
 			Response struct {
 				Text         string `xml:",chardata"`
@@ -31,11 +33,11 @@ type EnvelopeResponse struct {
 					Text string `xml:",chardata"`
 					Data struct {
 						Text   string `xml:",chardata"`
-						Q1     string `xml:"q1,attr"`
 						Type   string `xml:"type,attr"`
+						Q1     string `xml:"q1,attr"`
 						Result struct {
 							Text  string `xml:",chardata"`
-							Covid struct {
+							Covid []struct {
 								Text    string `xml:",chardata"`
 								Key     string `xml:"Key"`
 								Patient struct {
@@ -49,14 +51,28 @@ type EnvelopeResponse struct {
 									MiddleName               string `xml:"MiddleName"`
 									AddressOfActualResidence string `xml:"AddressOfActualResidence"`
 									PlaceOfStudyOrWork       string `xml:"PlaceOfStudyOrWork"`
-									Phone                    string `xml:"Phone"`
 								} `xml:"Patient"`
-								HasSymptomsCOVID string `xml:"HasSymptomsCOVID"`
-								ProbeStatus      string `xml:"ProbeStatus"`
-								CollectedTime    string `xml:"CollectedTime"`
-								ProtocolDate     string `xml:"ProtocolDate"`
-								ResearchResults  string `xml:"ResearchResults"`
-								CreatedAt        string `xml:"CreatedAt"`
+								HasSymptomsCOVID                      string `xml:"HasSymptomsCOVID"`
+								AccordingToEpidemiologicalIndications struct {
+									Text string `xml:",chardata"`
+									Type string `xml:"Type"`
+								} `xml:"AccordingToEpidemiologicalIndications"`
+								ForThePurposeOfEpidemiologicalSurveillance struct {
+									Text      string `xml:",chardata"`
+									Type      string `xml:"Type"`
+									Other     string `xml:"Other"`
+									Diagnosis string `xml:"Diagnosis"`
+								} `xml:"ForThePurposeOfEpidemiologicalSurveillance"`
+								ForPreventivePurposes struct {
+									Text  string `xml:",chardata"`
+									Type  string `xml:"Type"`
+									Other string `xml:"Other"`
+								} `xml:"ForPreventivePurposes"`
+								ProbeStatus     string `xml:"ProbeStatus"`
+								CollectedTime   string `xml:"CollectedTime"`
+								ProtocolDate    string `xml:"ProtocolDate"`
+								ResearchResults string `xml:"ResearchResults"`
+								CreatedAt       string `xml:"CreatedAt"`
 							} `xml:"covid"`
 						} `xml:"result"`
 					} `xml:"data"`

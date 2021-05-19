@@ -5,5 +5,5 @@ vendor
 main.exe
 
 # environment files
-.env
-.local_env
+build/.env
+build/.local_env

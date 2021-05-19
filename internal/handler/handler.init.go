@@ -5,23 +5,24 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"kz.nitec.digidocs.pcr/config"
-	"kz.nitec.digidocs.pcr/models"
-	"kz.nitec.digidocs.pcr/repository"
+	_ "github.com/lib/pq"
+	config2 "kz.nitec.digidocs.pcr/internal/config"
+	models2 "kz.nitec.digidocs.pcr/internal/models"
+	repository2 "kz.nitec.digidocs.pcr/internal/repository"
 	"log"
 	"net/http"
 	"time"
 )
 
 type App struct {
-	Config *config.MainConfig
+	Config *config2.MainConfig
 	DB     *sql.DB
 	Router *gin.Engine
 
-	Pcr models.PcrRepository
+	Pcr models2.PcrRepository
 }
 
-func (a *App) Initialize(conf *config.MainConfig) {
+func (a *App) Initialize(conf *config2.MainConfig) {
 	a.Config = conf
 
 	gin.SetMode(conf.App.Mode)
@@ -31,10 +32,10 @@ func (a *App) Initialize(conf *config.MainConfig) {
 	a.setRoutes()
 	db, err := a.getConnection()
 	if err != nil {
-		log.Printf("could not connect to db")
+		log.Printf("could not connect to db %s", err.Error())
 		return
 	}
-	a.Pcr = repository.PcrRepositoryInit(db)
+	a.Pcr = repository2.PcrRepositoryInit(db)
 }
 
 func (a *App) getConnection() (*sql.DB, error) {
