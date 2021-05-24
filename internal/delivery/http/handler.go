@@ -1,10 +1,10 @@
 package http
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"kz.nitec.digidocs.pcr/internal/Service"
 	"kz.nitec.digidocs.pcr/internal/models"
+	"log"
 	"net/http"
 )
 
@@ -12,40 +12,52 @@ type Handler struct {
 	Services *Service.Services
 }
 
-func NewHandler(services *Service.Services) *Handler{
-	return  &Handler{services}
+func NewHandler(services *Service.Services) *Handler {
+	return &Handler{services}
 }
 
-func (h *Handler) InitRoutes() *gin.Engine{
-	router:=gin.Default()
+func (h *Handler) InitRoutes() *gin.Engine {
+	router := gin.Default()
 
 	router.Use(
 		gin.Recovery(),
 		gin.Logger(),
-		)
+	)
 	router.GET("/ping", Pong)
+
 	pcr := router.Group("/digilocker/pcr-cert/api")
 	{
-		pcr.POST("/pcr-result")
+		pcr.POST("/pcr-result", h.Process)
 	}
 
 	return router
 }
 
-func Pong(c *gin.Context){
+func Pong(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 
-
-func (a *App) Process(c *gin.Context) {
+func (h *Handler) Process(c *gin.Context) {
 	request := models.DocumentRequest{}
 	c.BindJSON(&request)
-	fmt.Printf("iin: %s\n", request.Iin)
-	data, err := a.SendMessage(&request)
+
+	data, err := h.Services.PcrCertificateService.GetBySoap(request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err)
+		log.Println(err)
+		c.String(http.StatusInternalServerError, "Internal server error")
 		return
 	}
 
-	c.XML(http.StatusOK, *data)
+	var result *models.EnvelopeResponse
+	switch data.(type) {
+	case *models.EnvelopeResponse:
+		result = data.(*models.EnvelopeResponse)
+	default:
+		log.Println("Unexpected data type")
+		c.String(http.StatusInternalServerError, "Unexpected data type")
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+
 }

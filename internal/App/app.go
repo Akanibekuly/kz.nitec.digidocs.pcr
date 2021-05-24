@@ -29,16 +29,16 @@ func Run() {
 	}
 
 	// initialize pcr repository
-	repos:=repository.NewRepositories(db)
-	services:=Service.NewServices(Service.Deps{
+	repos := repository.NewRepositories(db)
+	services := Service.NewServices(Service.Deps{
 		repos,
 		configs.Shep,
 	})
 
-	handlers:=delivery.NewHandler(services)
+	handlers := delivery.NewHandler(services)
 
-	srv:=http.Server{
-		Addr: configs.App.Port,
+	srv := http.Server{
+		Addr:    configs.App.Port,
 		Handler: handlers.InitRoutes(),
 	}
 

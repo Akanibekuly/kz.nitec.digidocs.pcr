@@ -14,12 +14,13 @@ type ShepService interface {
 }
 
 type Deps struct {
-	Repos *repository.Repositories
+	Repos      *repository.Repositories
 	ShepConfig *config.Shep
+	Code string
 }
 
-func NewServices(deps Deps) *Services{
+func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: NewPcrCertificateService(deps.Repos.PcrCertificate, deps.ShepConfig),
+		PcrCertificateService: newPcrCertificateService(deps.Repos.PcrCertificate, deps.ShepConfig, deps.Code),
 	}
 }

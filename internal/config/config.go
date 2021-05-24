@@ -4,6 +4,7 @@ type MainConfig struct {
 	App  *AppConf
 	DB   *DBConf
 	Shep *Shep
+	AppCode string
 }
 
 type (
@@ -53,5 +54,6 @@ func GetConfig() *MainConfig {
 			ShepLogin:      getVarEnvAsStr("SHEP_LOGIN", ""),
 			ShepPassword:   getVarEnvAsStr("SHEP_PASSWORD", ""),
 		},
+		AppCode: getVarEnvAsStr("APP_CODE","PCR_CERTIFICATE"),
 	}
 }

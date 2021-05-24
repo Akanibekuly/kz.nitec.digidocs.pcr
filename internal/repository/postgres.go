@@ -29,5 +29,3 @@ func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
 
 	return db, nil
 }
-
-
