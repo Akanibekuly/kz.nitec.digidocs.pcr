@@ -39,7 +39,10 @@ func Pong(c *gin.Context) {
 
 func (h *Handler) Process(c *gin.Context) {
 	request := models.DocumentRequest{}
-	c.BindJSON(&request)
+	err := c.BindJSON(&request)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Internal server error")
+	}
 
 	data, err := h.Services.PcrCertificateService.GetBySoap(request)
 	if err != nil {

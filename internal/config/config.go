@@ -1,10 +1,10 @@
 package config
 
 type MainConfig struct {
-	App  *AppConf
-	DB   *DBConf
-	Shep *Shep
-	AppCode string
+	App     *AppConf
+	DB      *DBConf
+	Shep    *Shep
+	PcrCode string
 }
 
 type (
@@ -54,6 +54,6 @@ func GetConfig() *MainConfig {
 			ShepLogin:      getVarEnvAsStr("SHEP_LOGIN", ""),
 			ShepPassword:   getVarEnvAsStr("SHEP_PASSWORD", ""),
 		},
-		AppCode: getVarEnvAsStr("APP_CODE","PCR_CERTIFICATE"),
+		PcrCode: getVarEnvAsStr("PCR_CODE", "PCR_CERTIFICATE"),
 	}
 }

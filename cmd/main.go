@@ -1,7 +1,7 @@
 package main
 
-import "kz.nitec.digidocs.pcr/internal/App"
+import "kz.nitec.digidocs.pcr/internal/app"
 
 func main() {
-	App.Run()
+	app.Run()
 }

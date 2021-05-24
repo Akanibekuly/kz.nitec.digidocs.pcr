@@ -31,7 +31,7 @@ type PcrCertificateService struct {
 	code string
 }
 
-func newPcrCertificateService(repo repository.PcrCertificate, conf *config.Shep, code string ) *PcrCertificateService {
+func newPcrCertificateService(repo repository.PcrCertificate, conf *config.Shep, code string) *PcrCertificateService {
 	return &PcrCertificateService{
 		repo, conf, code,
 	}
@@ -88,32 +88,44 @@ func (pcr *PcrCertificateService) GetBySoap(request interface{}) (interface{}, e
 		},
 	}
 
-	shepResponse := &models.EnvelopeResponse{}
 	b, err := xml.Marshal(envelope)
 	if err != nil {
-		return shepResponse, err
+		return nil, err
 	}
 	req, err := http.NewRequest(http.MethodPost, pcr.conf.ShepEndpoint, bytes.NewBuffer(b))
 	if err != nil {
-		return shepResponse, err
+		return nil, err
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return shepResponse, err
+		return nil, err
 	}
 
 	response, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("could not read response body")
-		return shepResponse, err
+		return nil, err
 	}
 
-	err = xml.Unmarshal(response, &shepResponse)
+	shepResponse := &models.EnvelopeResponse{}
+	err = xml.Unmarshal(response, shepResponse)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	return shepResponse, nil
+	docResponse, err := pcr.buildDocumentResponse(shepResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return docResponse, nil
+}
+
+// fill Document response for json response struct
+func (pcr *PcrCertificateService) buildDocumentResponse(shepResponse *models.EnvelopeResponse) (*models.DocResponse, error) {
+	var response *models.DocResponse
+
+	return response, nil
 }

@@ -16,7 +16,7 @@ type ShepService interface {
 type Deps struct {
 	Repos      *repository.Repositories
 	ShepConfig *config.Shep
-	Code string
+	Code       string
 }
 
 func NewServices(deps Deps) *Services {

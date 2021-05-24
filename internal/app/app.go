@@ -1,4 +1,4 @@
-package App
+package app
 
 import (
 	"context"
@@ -33,6 +33,7 @@ func Run() {
 	services := Service.NewServices(Service.Deps{
 		repos,
 		configs.Shep,
+		configs.PcrCode,
 	})
 
 	handlers := delivery.NewHandler(services)
