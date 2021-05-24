@@ -1,6 +1,6 @@
 // +build unit
 
-package handler
+package http
 
 import (
 	"encoding/xml"
@@ -64,17 +64,15 @@ func TestApp_SendMessage(t *testing.T) {
 		NameRu: "Результат ПЦР тестирования на COVID-19",
 	}
 	cases := []struct {
-		iin    string
-		err    error
-		expErr error
+		iin       string
+		err       error
+		expErr    error
 		expResult *models2.EnvelopeResponse
 	}{
 		{
-			iin: "950110350170",
-			err: nil,
-			expResult: &models2.EnvelopeResponse{
-
-			},
+			iin:       "950110350170",
+			err:       nil,
+			expResult: &models2.EnvelopeResponse{},
 		},
 	}
 
