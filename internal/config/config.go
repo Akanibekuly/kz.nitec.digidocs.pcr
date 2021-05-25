@@ -31,7 +31,6 @@ type (
 	}
 
 	Shep struct {
-		ShepEndpoint   string
 		SenderLogin    string
 		SenderPassword string
 		ShepLogin      string
@@ -48,8 +47,8 @@ type (
 func checkConfig() error {
 	envs := []string{
 		"APP__MODE", "APP__PORT",
-		"DB_DIALECT", "DB_HOST", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
-		"SHEP_ENDPOINT", "SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD", "SHEP_RETRY_COUNT",
+		"DB_DIALECT", "DB_URI", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
+		"SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD", "SHEP_RETRY_COUNT",
 		"PCR_CODE", "PCR_NAME",
 	}
 
@@ -73,14 +72,13 @@ func GetConfig() (*MainConfig, error) {
 		},
 		DB: &DBConf{
 			Dialect:  getVarEnvAsStr("DB_DIALECT", ""),
-			Host:     getVarEnvAsStr("DB_HOST", ""),
+			Host:     getVarEnvAsStr("DB_URI", ""),
 			Port:     getVarEnvAsInt("DB_PORT", 0),
 			Username: getVarEnvAsStr("DB_LOGIN", ""),
 			Password: getVarEnvAsStr("DB_PASSWORD", ""),
 			DBName:   getVarEnvAsStr("DB_NAME", ""),
 		},
 		Shep: &Shep{
-			ShepEndpoint:   getVarEnvAsStr("SHEP_ENDPOINT", ""),
 			SenderLogin:    getVarEnvAsStr("SENDER_LOGIN", ""),
 			SenderPassword: getVarEnvAsStr("SENDER_PASSWORD", ""),
 			ShepLogin:      getVarEnvAsStr("SHEP_LOGIN", ""),

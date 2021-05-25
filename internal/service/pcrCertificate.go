@@ -70,7 +70,7 @@ func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest, url
 	return shepResponse, nil
 }
 
-func (pcr *PcrCertificateService) NewSoapRequest(serviceId string, request *models.DocumentRequest) *models.SoapRequest {
+func (pcr *PcrCertificateService) NewSoapRequest(request *models.DocumentRequest, serviceId string) *models.SoapRequest {
 	return &models.SoapRequest{
 		XMLName: xml.Name{Local: ENVELOPE},
 		Text:    "",

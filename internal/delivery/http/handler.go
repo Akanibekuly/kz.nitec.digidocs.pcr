@@ -53,7 +53,7 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		return
 	}
 
-	soapRequest := h.Services.PcrCertificateService.NewSoapRequest(serviceInfo.ServiceId, &request)
+	soapRequest := h.Services.PcrCertificateService.NewSoapRequest(&request, serviceInfo.ServiceId)
 
 	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest, serviceInfo.URL)
 	if err != nil {

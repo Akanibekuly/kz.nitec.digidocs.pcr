@@ -18,19 +18,18 @@ type DocumentService interface {
 
 type ShepService interface {
 	GetBySoap(request *models.SoapRequest, url string) (*models.SoapResponse, error)
-	NewSoapRequest(string, *models.DocumentRequest) *models.SoapRequest
+	NewSoapRequest(*models.DocumentRequest, string) *models.SoapRequest
 }
 
 type Deps struct {
 	Repos      *repository.Repositories
 	ShepConfig *config.Shep
 	PcrConfig  *config.Pcr
-	Code       string
 }
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: newPcrCertificateService(deps.Repos.PcrCertificate, deps.ShepConfig, deps.Code),
+		PcrCertificateService: newPcrCertificateService(deps.Repos.PcrCertificate, deps.ShepConfig, deps.PcrConfig.Code),
 		DocumentService:       NewDocumentService(deps.Repos.PcrCertificate, deps.PcrConfig),
 	}
 }
