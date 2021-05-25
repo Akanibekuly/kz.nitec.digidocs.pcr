@@ -3,10 +3,10 @@ package app
 import (
 	"context"
 	"github.com/joho/godotenv"
-	"kz.nitec.digidocs.pcr/internal/Service"
 	"kz.nitec.digidocs.pcr/internal/config"
 	delivery "kz.nitec.digidocs.pcr/internal/delivery/http"
 	"kz.nitec.digidocs.pcr/internal/repository"
+	"kz.nitec.digidocs.pcr/internal/service"
 	"log"
 	"net/http"
 	"os"
@@ -21,16 +21,22 @@ func Run() {
 		return
 	}
 
-	configs := config.GetConfig()
+	configs, err := config.GetConfig()
+	if err!=nil{
+		log.Println(err)
+		return
+	}
 
 	db, err := repository.NewPostgresDB(configs.DB)
 	if err != nil {
 		log.Println(err)
+		return
 	}
+	defer db.Close()
 
 	// initialize pcr repository
 	repos := repository.NewRepositories(db)
-	services := Service.NewServices(Service.Deps{
+	services := service.NewServices(service.Deps{
 		repos,
 		configs.Shep,
 		configs.PcrCode,

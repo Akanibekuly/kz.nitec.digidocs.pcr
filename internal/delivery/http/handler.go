@@ -2,17 +2,17 @@ package http
 
 import (
 	"github.com/gin-gonic/gin"
-	"kz.nitec.digidocs.pcr/internal/Service"
 	"kz.nitec.digidocs.pcr/internal/models"
+	"kz.nitec.digidocs.pcr/internal/service"
 	"log"
 	"net/http"
 )
 
 type Handler struct {
-	Services *Service.Services
+	Services *service.Services
 }
 
-func NewHandler(services *Service.Services) *Handler {
+func NewHandler(services *service.Services) *Handler {
 	return &Handler{services}
 }
 

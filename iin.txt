@@ -1,0 +1,253 @@
+931227450493
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/>
+   <soap:Body>
+      <SendMessageResponse xmlns="http://bip.bee.kz/SyncChannel/v10/Types">
+         <response xmlns="">
+            <responseInfo>
+               <responseDate>0001-01-01T00:00:00</responseDate>
+               <status>
+                  <code>success</code>
+                  <message>success</message>
+               </status>
+            </responseInfo>
+            <responseData>
+               <data xsi:type="q1:CovidResponse" xmlns:q1="http://api.nce.kz/SyncChannel/v1/Types/CovidResponse">
+                  <result/>
+               </data>
+            </responseData>
+         </response>
+      </SendMessageResponse>
+   </soap:Body>
+</soap:Envelope>
+
+
+940531451013
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/>
+   <soap:Body>
+      <SendMessageResponse xmlns="http://bip.bee.kz/SyncChannel/v10/Types">
+         <response xmlns="">
+            <responseInfo>
+               <responseDate>0001-01-01T00:00:00</responseDate>
+               <status>
+                  <code>success</code>
+                  <message>success</message>
+               </status>
+            </responseInfo>
+            <responseData>
+               <data xsi:type="q1:CovidResponse" xmlns:q1="http://api.nce.kz/SyncChannel/v1/Types/CovidResponse">
+                  <result>
+                     <covid>
+                        <Key>8b0f2274-25e3-4740-828c-c4129760ac77</Key>
+                        <Patient>
+                           <IIN>940531451013</IIN>
+                           <IsResident>true</IsResident>
+                           <Birthday>1994-05-31T00:00:00</Birthday>
+                           <Gender>WomanEnum</Gender>
+                           <FirstName>Корлан</FirstName>
+                           <LastName>Буркитбаева</LastName>
+                           <MiddleName>Сериковна</MiddleName>
+                           <AddressOfActualResidence>КАЗАХСТАН НУР-СУЛТАН ЕСИЛЬ Е30 дом 7 кв. 402</AddressOfActualResidence>
+                           <PlaceOfStudyOrWork>-</PlaceOfStudyOrWork>
+                           <Phone>87084925420</Phone>
+                        </Patient>
+                        <HasSymptomsCOVID>false</HasSymptomsCOVID>
+                        <ProbeStatus>PrimaryEnum</ProbeStatus>
+                        <CollectedTime>2021-04-27T12:15:00</CollectedTime>
+                        <ProtocolDate>2021-04-27T12:15:00</ProtocolDate>
+                        <ResearchResults>false</ResearchResults>
+                        <CreatedAt>2021-04-27T11:30:48.522142</CreatedAt>
+                     </covid>
+                  </result>
+               </data>
+            </responseData>
+         </response>
+      </SendMessageResponse>
+   </soap:Body>
+</soap:Envelope>
+
+931227450493
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/>
+   <soap:Body>
+      <SendMessageResponse xmlns="http://bip.bee.kz/SyncChannel/v10/Types">
+         <response xmlns="">
+            <responseInfo>
+               <responseDate>0001-01-01T00:00:00</responseDate>
+               <status>
+                  <code>success</code>
+                  <message>success</message>
+               </status>
+            </responseInfo>
+            <responseData>
+               <data xsi:type="q1:CovidResponse" xmlns:q1="http://api.nce.kz/SyncChannel/v1/Types/CovidResponse">
+                  <result/>
+               </data>
+            </responseData>
+         </response>
+      </SendMessageResponse>
+   </soap:Body>
+</soap:Envelope>
+
+871111451324
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/>
+   <soap:Body>
+      <SendMessageResponse xmlns="http://bip.bee.kz/SyncChannel/v10/Types">
+         <response xmlns="">
+            <responseInfo>
+               <responseDate>0001-01-01T00:00:00</responseDate>
+               <status>
+                  <code>success</code>
+                  <message>success</message>
+               </status>
+            </responseInfo>
+            <responseData>
+               <data xsi:type="q1:CovidResponse" xmlns:q1="http://api.nce.kz/SyncChannel/v1/Types/CovidResponse">
+                  <result>
+                     <covid>
+                        <Key>e0359c82-f69b-457d-bc60-968bb7a0f9bd</Key>
+                        <Patient>
+                           <IIN>871111451324</IIN>
+                           <IsResident>true</IsResident>
+                           <Birthday>1987-11-11T00:00:00Z</Birthday>
+                           <Gender>WomanEnum</Gender>
+                           <FirstName>ГУЛЬМИРА</FirstName>
+                           <LastName>ИСАБЕКОВА</LastName>
+                           <MiddleName>БОЛАТОВНА</MiddleName>
+                           <AddressOfActualResidence>КОРГАЛЬЖИНСКОЕ ШОССЕ 31А-51</AddressOfActualResidence>
+                           <PlaceOfStudyOrWork>АО НИД</PlaceOfStudyOrWork>
+                           <Phone>+7(702)921-20-40</Phone>
+                        </Patient>
+                        <HasSymptomsCOVID>false</HasSymptomsCOVID>
+                        <AccordingToEpidemiologicalIndications>
+                           <Type>CloseContactSelfCirculationEnum</Type>
+                        </AccordingToEpidemiologicalIndications>
+                        <ForThePurposeOfEpidemiologicalSurveillance>
+                           <q1:Type>PatientsWithEmergencyHospitalizations</q1:Type>
+                        </ForThePurposeOfEpidemiologicalSurveillance>
+                        <ForPreventivePurposes>
+                           <q1:Type>NewlyArrivedFromAbroadEnum</q1:Type>
+                        </ForPreventivePurposes>
+                        <ProbeStatus>PrimaryEnum</ProbeStatus>
+                        <CollectedTime>2021-04-30T14:10:00Z</CollectedTime>
+                        <ProtocolDate>2021-05-01T09:30:22</ProtocolDate>
+                        <ResearchResults>false</ResearchResults>
+                        <CreatedAt>2021-05-01T06:32:46.383056</CreatedAt>
+                     </covid>
+                     <covid>
+                        <Key>efe08760-3081-4843-af0d-dde85978060e</Key>
+                        <Patient>
+                           <IIN>871111451324</IIN>
+                           <IsResident>false</IsResident>
+                           <Birthday>1987-11-11T00:00:00</Birthday>
+                           <Gender>WomanEnum</Gender>
+                           <FirstName>Гульмира</FirstName>
+                           <LastName>Исабекова</LastName>
+                           <MiddleName/>
+                           <AddressOfActualResidence>Коргалжын шоссе 31А-51</AddressOfActualResidence>
+                           <PlaceOfStudyOrWork>-</PlaceOfStudyOrWork>
+                           <Phone>+77029212040</Phone>
+                        </Patient>
+                        <HasSymptomsCOVID>false</HasSymptomsCOVID>
+                        <ProbeStatus>PrimaryEnum</ProbeStatus>
+                        <CollectedTime>2021-02-22T00:00:00</CollectedTime>
+                        <ProtocolDate>2021-02-22T00:00:00</ProtocolDate>
+                        <ResearchResults>false</ResearchResults>
+                        <CreatedAt>2021-02-22T05:06:08.910445</CreatedAt>
+                     </covid>
+                     <covid>
+                        <Key>29bc39d5-040e-4584-be1a-e76b26c2109d</Key>
+                        <Patient>
+                           <IIN>871111451324</IIN>
+                           <IsResident>true</IsResident>
+                           <Birthday>1987-11-11T00:00:00Z</Birthday>
+                           <Gender>WomanEnum</Gender>
+                           <FirstName>ГУЛЬМИРА</FirstName>
+                           <LastName>ИСАБЕКОВА</LastName>
+                           <MiddleName>БОЛАТОВНА</MiddleName>
+                           <AddressOfActualResidence>КОРГАЛЬЖИНСКОЕ ШОССЕ 31А-51</AddressOfActualResidence>
+                           <PlaceOfStudyOrWork>АО НИТ</PlaceOfStudyOrWork>
+                           <Phone>+7(702)921-20-40</Phone>
+                        </Patient>
+                        <HasSymptomsCOVID>false</HasSymptomsCOVID>
+                        <AccordingToEpidemiologicalIndications>
+                           <Type>CloseContactSelfCirculationEnum</Type>
+                        </AccordingToEpidemiologicalIndications>
+                        <ForThePurposeOfEpidemiologicalSurveillance>
+                           <q1:Type>PatientsWithEmergencyHospitalizations</q1:Type>
+                        </ForThePurposeOfEpidemiologicalSurveillance>
+                        <ForPreventivePurposes>
+                           <q1:Type>NewlyArrivedFromAbroadEnum</q1:Type>
+                        </ForPreventivePurposes>
+                        <ProbeStatus>PrimaryEnum</ProbeStatus>
+                        <CollectedTime>2021-02-10T14:44:00Z</CollectedTime>
+                        <ProtocolDate>2021-02-11T09:36:31</ProtocolDate>
+                        <ResearchResults>false</ResearchResults>
+                        <CreatedAt>2021-02-11T06:38:26.349933</CreatedAt>
+                     </covid>
+                  </result>
+               </data>
+            </responseData>
+         </response>
+      </SendMessageResponse>
+   </soap:Body>
+</soap:Envelope>
+
+
+950110350170 
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"/>
+   <soap:Body>
+      <SendMessageResponse xmlns="http://bip.bee.kz/SyncChannel/v10/Types">
+         <response xmlns="">
+            <responseInfo>
+               <responseDate>0001-01-01T00:00:00</responseDate>
+               <status>
+                  <code>success</code>
+                  <message>success</message>
+               </status>
+            </responseInfo>
+            <responseData>
+               <data xsi:type="q1:CovidResponse" xmlns:q1="http://api.nce.kz/SyncChannel/v1/Types/CovidResponse">
+                  <result>
+                     <covid>
+                        <Key>2e711790-d85f-4461-ada4-6fae4b989d2f</Key>
+                        <Patient>
+                           <IIN>950110350170</IIN>
+                           <IsResident>true</IsResident>
+                           <Birthday>1995-01-10T00:00:00</Birthday>
+                           <Gender>ManEnum</Gender>
+                           <FirstName>РУСТЕМ</FirstName>
+                           <LastName>ЖОЛДАБЕКОВ</LastName>
+                           <MiddleName/>
+                           <AddressOfActualResidence>ГОРОД РЕСП.ЗНАЧ.: НУР-СУЛТАН, РАЙОН ВНУТРИ ГОРОДА: ЕСИЛЬ, ШОССЕ: КУРГАЛЬЖИНСКОЕ, ДОМ: 2</AddressOfActualResidence>
+                           <PlaceOfStudyOrWork>не указано</PlaceOfStudyOrWork>
+                        </Patient>
+                        <HasSymptomsCOVID>false</HasSymptomsCOVID>
+                        <AccordingToEpidemiologicalIndications>
+                           <Type>AccordingToEpidemiologicalIndicationsEnum</Type>
+                        </AccordingToEpidemiologicalIndications>
+                        <ForThePurposeOfEpidemiologicalSurveillance>
+                           <q1:Type>Other</q1:Type>
+                           <q1:Other/>
+                           <q1:Diagnosis/>
+                        </ForThePurposeOfEpidemiologicalSurveillance>
+                        <ForPreventivePurposes>
+                           <q1:Type>Other</q1:Type>
+                           <q1:Other/>
+                        </ForPreventivePurposes>
+                        <ProbeStatus>PrimaryEnum</ProbeStatus>
+                        <CollectedTime>2020-10-02T12:32:23</CollectedTime>
+                        <ProtocolDate>2020-10-02T00:00:00</ProtocolDate>
+                        <ResearchResults>true</ResearchResults>
+                        <CreatedAt>2020-10-03T06:45:31.444323</CreatedAt>
+                     </covid>
+                  </result>
+               </data>
+            </responseData>
+         </response>
+      </SendMessageResponse>
+   </soap:Body>
+</soap:Envelope>

@@ -1,10 +1,13 @@
 package repository
 
-import "database/sql"
+import (
+	"database/sql"
+	"kz.nitec.digidocs.pcr/internal/models"
+)
 
 type PcrCertificate interface {
-	GetServiceInfoByCode(code string) (*Service, error)
-	GetDocInfoByCode(code string) (*Document, error)
+	GetServiceInfoByCode(code string) (*models.Service, error)
+	GetDocInfoByCode(code string) (*models.Document, error)
 }
 
 type Repositories struct {

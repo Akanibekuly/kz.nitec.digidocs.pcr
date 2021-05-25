@@ -5,5 +5,7 @@ vendor
 main.exe
 
 # environment files
-build/.env
 build/.local_env
+
+#test files
+iin.txt

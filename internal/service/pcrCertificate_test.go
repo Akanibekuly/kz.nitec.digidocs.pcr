@@ -1,6 +1,6 @@
 // +build unit
 
-package Service
+package service
 
 import (
 	"encoding/xml"

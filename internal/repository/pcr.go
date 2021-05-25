@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
+	"kz.nitec.digidocs.pcr/internal/models"
 )
 
 type PcrRepository struct {
@@ -13,15 +14,9 @@ func NewPcrRepository(db *sql.DB) *PcrRepository {
 	return &PcrRepository{db: db}
 }
 
-type Service struct {
-	Code      string
-	ServiceId sql.NullString
-	URL       sql.NullString
-}
-
-func (repo *PcrRepository) GetServiceInfoByCode(code string) (*Service, error) {
+func (repo *PcrRepository) GetServiceInfoByCode(code string) (*models.Service, error) {
 	row := repo.db.QueryRow("SELECT service_id, url FROM service WHERE code = ?", code)
-	service := &Service{
+	service := &models.Service{
 		Code: code,
 	}
 	err := row.Scan(&service.ServiceId, &service.URL)
@@ -32,16 +27,11 @@ func (repo *PcrRepository) GetServiceInfoByCode(code string) (*Service, error) {
 	return service, nil
 }
 
-type Document struct {
-	Code   string
-	NameKK sql.NullString
-	NameRu sql.NullString
-	NameEn sql.NullString
-}
 
-func (repo *PcrRepository) GetDocInfoByCode(code string) (*Document, error) {
+
+func (repo *PcrRepository) GetDocInfoByCode(code string) (*models.Document, error) {
 	row := repo.db.QueryRow("SELECT name_en, name_ru, name_kk FROM document_type WHERE code=?", code)
-	doc := &Document{Code: code}
+	doc := &models.Document{Code: code}
 	err := row.Scan(&doc.NameEn, &doc.NameRu, &doc.NameKK)
 	if err != nil {
 		return nil, err
