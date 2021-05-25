@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/service"
+	logs "kz.nitec.digidocs.pcr/pkg/logger"
 	"log"
 	"net/http"
 )
@@ -27,7 +28,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	pcr := router.Group("/digilocker/pcr-cert/api")
 	{
-		pcr.POST("/pcr-result", h.Process)
+		pcr.POST("/pcr-result", h.PcrTaskManager)
 	}
 
 	return router
@@ -37,30 +38,29 @@ func Pong(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 
-func (h *Handler) Process(c *gin.Context) {
+func (h *Handler) PcrTaskManager(c *gin.Context) {
 	request := models.DocumentRequest{}
 	err := c.BindJSON(&request)
 	if err != nil {
+		logs.Logging(logs.GetStandardLog("ERROR", "Bad request", "pcr-app", "INFO", ""))
 		c.String(http.StatusInternalServerError, "Internal server error")
+		return
 	}
 
-	data, err := h.Services.PcrCertificateService.GetBySoap(request)
+	serviceInfo, err := h.Services.DocumentService.GetServiceInfoByCode()
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Internal server error")
+		return
+	}
+
+	soapRequest := h.Services.PcrCertificateService.NewSoapRequest(serviceInfo.ServiceId, &request)
+
+	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest, serviceInfo.URL)
 	if err != nil {
 		log.Println(err)
 		c.String(http.StatusInternalServerError, "Internal server error")
 		return
 	}
 
-	var result *models.EnvelopeResponse
-	switch data.(type) {
-	case *models.EnvelopeResponse:
-		result = data.(*models.EnvelopeResponse)
-	default:
-		log.Println("Unexpected data type")
-		c.String(http.StatusInternalServerError, "Unexpected data type")
-		return
-	}
-
-	c.JSON(http.StatusOK, result)
-
+	c.JSON(http.StatusOK, data)
 }

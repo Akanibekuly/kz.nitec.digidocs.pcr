@@ -27,8 +27,6 @@ func (repo *PcrRepository) GetServiceInfoByCode(code string) (*models.Service, e
 	return service, nil
 }
 
-
-
 func (repo *PcrRepository) GetDocInfoByCode(code string) (*models.Document, error) {
 	row := repo.db.QueryRow("SELECT name_en, name_ru, name_kk FROM document_type WHERE code=?", code)
 	doc := &models.Document{Code: code}

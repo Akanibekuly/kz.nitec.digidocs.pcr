@@ -39,23 +39,23 @@ type (
 	}
 )
 
-func checkConfig() error{
-	envs:=[]string{"APP__MODE", "APP__PORT", "DB_DIALECT", "DB_HOST", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
+func checkConfig() error {
+	envs := []string{"APP__MODE", "APP__PORT", "DB_DIALECT", "DB_HOST", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
 		"SHEP_ENDPOINT", "SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD",
-		}
+	}
 
-		for _,val:=range envs{
-			if key,exists:=os.LookupEnv(val); !exists || key==""{
-				return fmt.Errorf("Env with key %s doesn't exists ", val)
-			}
+	for _, val := range envs {
+		if key, exists := os.LookupEnv(val); !exists || key == "" {
+			return fmt.Errorf("Env with key %s doesn't exists ", val)
 		}
+	}
 
 	return nil
 }
 
 func GetConfig() (*MainConfig, error) {
-	if err:=checkConfig(); err!=nil{
-		return nil,err
+	if err := checkConfig(); err != nil {
+		return nil, err
 	}
 	return &MainConfig{
 		App: &AppConf{

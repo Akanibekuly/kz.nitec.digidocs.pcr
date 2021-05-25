@@ -1,16 +1,14 @@
 package models
 
-import "database/sql"
-
 type Service struct {
 	Code      string
-	ServiceId sql.NullString
-	URL       sql.NullString
+	ServiceId string
+	URL       string
 }
 
 type Document struct {
 	Code   string
-	NameKK sql.NullString
-	NameRu sql.NullString
-	NameEn sql.NullString
+	NameKK string
+	NameRu string
+	NameEn string
 }

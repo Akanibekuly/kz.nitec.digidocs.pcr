@@ -2,7 +2,7 @@ package models
 
 import "encoding/xml"
 
-type EnvelopeResponse struct {
+type SoapResponse struct {
 	XMLName xml.Name `xml:"Envelope"`
 	Text    string   `xml:",chardata"`
 	Soap    string   `xml:"soap,attr"`

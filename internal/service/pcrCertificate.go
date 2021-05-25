@@ -37,20 +37,41 @@ func newPcrCertificateService(repo repository.PcrCertificate, conf *config.Shep,
 	}
 }
 
-func (pcr *PcrCertificateService) GetBySoap(request interface{}) (interface{}, error) {
-	if request == nil {
-		return nil, fmt.Errorf("Wrong request type %T ", request)
-	}
-	var docRequest *models.DocumentRequest
-	switch request.(type) {
-	case *models.DocumentRequest:
-		docRequest = request.(*models.DocumentRequest)
-	default:
-		return nil, fmt.Errorf("Wrong request type %T ", request)
+func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest, url string) (*models.SoapResponse, error) {
+	b, err := xml.Marshal(soapRequest)
+	if err != nil {
+		return nil, err
 	}
 
-	service := docRequest.Services["PCR_CERTIFICATE"]
-	envelope := models.EnvelopeRequest{
+	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(b))
+	if err != nil {
+		return nil, err
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("could not read response body")
+		return nil, err
+	}
+
+	shepResponse := &models.SoapResponse{}
+	err = xml.Unmarshal(data, shepResponse)
+	if err != nil {
+		fmt.Println(err)
+		return nil,err
+	}
+
+	return shepResponse, nil
+}
+
+func (pcr *PcrCertificateService) NewSoapRequest(serviceId string, request *models.DocumentRequest) *models.SoapRequest {
+	return &models.SoapRequest{
 		XMLName: xml.Name{Local: ENVELOPE},
 		Text:    "",
 		Xmlns:   ENVELOP_SCHEMA,
@@ -66,7 +87,7 @@ func (pcr *PcrCertificateService) GetBySoap(request interface{}) (interface{}, e
 					ReqInfo: &models.RequestInfo{
 						MessageId:   uuid.New().String(),
 						MessageDate: time.Now().Format("2006-01-02T15:04:05Z07:00"),
-						ServiceId:   service.ServiceId,
+						ServiceId:   serviceId,
 						Sender: &models.SenderCred{
 							SenderId: pcr.conf.SenderLogin,
 							Password: pcr.conf.SenderPassword,
@@ -78,7 +99,7 @@ func (pcr *PcrCertificateService) GetBySoap(request interface{}) (interface{}, e
 							Ns6:      COVID_REQUEST_XLMNS,
 							Xsi:      XSI_XMLNS_SCEMA,
 							Type:     COVID_REQUEST_TYPE,
-							Iin:      docRequest.Iin,
+							Iin:      request.Iin,
 							Login:    pcr.conf.ShepLogin,
 							Password: pcr.conf.ShepPassword,
 						},
@@ -87,45 +108,4 @@ func (pcr *PcrCertificateService) GetBySoap(request interface{}) (interface{}, e
 			},
 		},
 	}
-
-	b, err := xml.Marshal(envelope)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequest(http.MethodPost, pcr.conf.ShepEndpoint, bytes.NewBuffer(b))
-	if err != nil {
-		return nil, err
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	response, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println("could not read response body")
-		return nil, err
-	}
-
-	shepResponse := &models.EnvelopeResponse{}
-	err = xml.Unmarshal(response, shepResponse)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	docResponse, err := pcr.buildDocumentResponse(shepResponse)
-	if err != nil {
-		return nil, err
-	}
-
-	return docResponse, nil
-}
-
-// fill Document response for json response struct
-func (pcr *PcrCertificateService) buildDocumentResponse(shepResponse *models.EnvelopeResponse) (*models.DocResponse, error) {
-	var response *models.DocResponse
-
-	return response, nil
 }

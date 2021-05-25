@@ -50,7 +50,7 @@ type BodyRequest struct {
 	SendMessage *SendMessageRequest `xml:"ns2:SendMessage"`
 }
 
-type EnvelopeRequest struct {
+type SoapRequest struct {
 	XMLName xml.Name     `xml:"soap:Envelope"`
 	Text    string       `xml:",chardata"`
 	Xmlns   string       `xml:"xmlns:soap,attr"`

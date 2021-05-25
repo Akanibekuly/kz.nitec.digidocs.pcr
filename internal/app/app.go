@@ -22,7 +22,7 @@ func Run() {
 	}
 
 	configs, err := config.GetConfig()
-	if err!=nil{
+	if err != nil {
 		log.Println(err)
 		return
 	}
