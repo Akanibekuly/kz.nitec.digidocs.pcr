@@ -1,4 +1,4 @@
-package config
+package utils
 
 import (
 	"fmt"
@@ -7,10 +7,10 @@ import (
 )
 
 type MainConfig struct {
-	App     *AppConf
-	DB      *DBConf
-	Shep    *Shep
-	PcrCode string
+	App  *AppConf
+	DB   *DBConf
+	Shep *Shep
+	Pcr  *Pcr
 }
 
 type (
@@ -31,22 +31,30 @@ type (
 	}
 
 	Shep struct {
-		ShepEndpoint   string
 		SenderLogin    string
 		SenderPassword string
 		ShepLogin      string
 		ShepPassword   string
+		ShepRetryCount int
+	}
+
+	Pcr struct {
+		Code string
+		Name string
 	}
 )
 
 func checkConfig() error {
-	envs := []string{"APP__MODE", "APP__PORT", "DB_DIALECT", "DB_HOST", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
-		"SHEP_ENDPOINT", "SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD",
+	envs := []string{
+		"APP__MODE", "APP__PORT",
+		"DB_DIALECT", "DB_URI", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
+		"SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD", "SHEP_RETRY_COUNT",
+		"PCR_CODE", "PCR_NAME",
 	}
 
-	for _, val := range envs {
-		if key, exists := os.LookupEnv(val); !exists || key == "" {
-			return fmt.Errorf("Env with key %s doesn't exists ", val)
+	for _, key := range envs {
+		if val, exists := os.LookupEnv(key); !exists || val == "" {
+			return fmt.Errorf("Env with key %s doesn't exists ", key)
 		}
 	}
 
@@ -59,25 +67,28 @@ func GetConfig() (*MainConfig, error) {
 	}
 	return &MainConfig{
 		App: &AppConf{
-			Mode: getVarEnvAsStr("APP__MODE", "debug"),
+			Mode: os.Getenv("APP__MODE"),
 			Port: getVarEnvAsStr("APP__PORT", "8080"),
 		},
 		DB: &DBConf{
 			Dialect:  getVarEnvAsStr("DB_DIALECT", ""),
-			Host:     getVarEnvAsStr("DB_HOST", ""),
+			Host:     getVarEnvAsStr("DB_URI", ""),
 			Port:     getVarEnvAsInt("DB_PORT", 0),
 			Username: getVarEnvAsStr("DB_LOGIN", ""),
 			Password: getVarEnvAsStr("DB_PASSWORD", ""),
 			DBName:   getVarEnvAsStr("DB_NAME", ""),
 		},
 		Shep: &Shep{
-			ShepEndpoint:   getVarEnvAsStr("SHEP_ENDPOINT", ""),
 			SenderLogin:    getVarEnvAsStr("SENDER_LOGIN", ""),
 			SenderPassword: getVarEnvAsStr("SENDER_PASSWORD", ""),
 			ShepLogin:      getVarEnvAsStr("SHEP_LOGIN", ""),
 			ShepPassword:   getVarEnvAsStr("SHEP_PASSWORD", ""),
+			ShepRetryCount: getVarEnvAsInt("SHEP_RETRY_COUNT", 0),
 		},
-		PcrCode: getVarEnvAsStr("PCR_CODE", "PCR_CERTIFICATE"),
+		Pcr: &Pcr{
+			Code: getVarEnvAsStr("PCR_CODE", ""),
+			Name: getVarEnvAsStr("PCR_NAME", ""),
+		},
 	}, nil
 }
 

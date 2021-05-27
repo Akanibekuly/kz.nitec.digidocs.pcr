@@ -3,10 +3,10 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"kz.nitec.digidocs.pcr/internal/config"
+	"kz.nitec.digidocs.pcr/pkg/utils"
 )
 
-func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
+func NewPostgresDB(cfg *utils.DBConf) (*sql.DB, error) {
 	var db *sql.DB
 	var err error
 	dbURI := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable",

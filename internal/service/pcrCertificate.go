@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
-	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
-	"kz.nitec.digidocs.pcr/internal/repository"
+	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
 	"time"
@@ -26,14 +25,13 @@ const (
 )
 
 type PcrCertificateService struct {
-	repo repository.PcrCertificate
-	conf *config.Shep
+	conf *utils.Shep
 	code string
 }
 
-func newPcrCertificateService(repo repository.PcrCertificate, conf *config.Shep, code string) *PcrCertificateService {
+func newPcrCertificateService(conf *utils.Shep, code string) *PcrCertificateService {
 	return &PcrCertificateService{
-		repo, conf, code,
+		conf, code,
 	}
 }
 
@@ -64,7 +62,7 @@ func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest, url
 	err = xml.Unmarshal(data, shepResponse)
 	if err != nil {
 		fmt.Println(err)
-		return nil,err
+		return nil, err
 	}
 
 	return shepResponse, nil

@@ -2,12 +2,11 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"github.com/joho/godotenv"
-	"kz.nitec.digidocs.pcr/internal/config"
 	delivery "kz.nitec.digidocs.pcr/internal/delivery/http"
 	"kz.nitec.digidocs.pcr/internal/repository"
 	"kz.nitec.digidocs.pcr/internal/service"
+	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
 	"os"
@@ -17,12 +16,12 @@ import (
 )
 
 func Run() {
-	if err := godotenv.Load( "build/.local_env"); err != nil {
+	if err := godotenv.Load("build/.local_env"); err != nil {
 		log.Println(err)
 		return
 	}
 
-	configs, err := config.GetConfig()
+	configs, err := utils.GetConfig()
 	if err != nil {
 		log.Println(err)
 		return
@@ -31,10 +30,10 @@ func Run() {
 	db, err := repository.NewPostgresDB(configs.DB)
 	if err != nil {
 		log.Println(err)
-		//return
+		return
 	}
 	defer db.Close()
-	fmt.Println("db connected ")
+
 	// initialize pcr repository
 	repos := repository.NewRepositories(db)
 	services := service.NewServices(service.Deps{
@@ -53,7 +52,7 @@ func Run() {
 	go func() {
 		log.Println("Starting server on port", configs.App.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatal(err)
+			return
 		}
 	}()
 

@@ -14,13 +14,13 @@ type DocumentResponseItem struct {
 	TitleKk          string
 	IssuedDate       string
 	ExpirationDate   string
-	SerializableData string
+	SerializableData IssuedDigiDoc
 	StorageID        string
 }
 
 type IssuedDigiDoc struct {
-	common DocCommon
-	domain PcrCertificate
+	Common DocCommon
+	Domain PcrCertificate
 }
 
 type DocCommon struct {
@@ -37,6 +37,7 @@ type DocPerson struct {
 	Iin       string
 	FirstName string
 	LastName  string
+	MiddleName string
 }
 
 type DocType struct {
@@ -57,7 +58,7 @@ type PcrCertificate struct {
 	MiddleName       string
 	Iin              string
 	Gender           string
-	isResident       string
+	IsResident       string
 	Adress           string
 	Birthday         string
 	PlaceOfStudy     string

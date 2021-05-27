@@ -37,47 +37,49 @@ type SoapResponse struct {
 						Q1     string `xml:"q1,attr"`
 						Result struct {
 							Text  string `xml:",chardata"`
-							Covid []struct {
-								Text    string `xml:",chardata"`
-								Key     string `xml:"Key"`
-								Patient struct {
-									Text                     string `xml:",chardata"`
-									IIN                      string `xml:"IIN"`
-									IsResident               string `xml:"IsResident"`
-									Birthday                 string `xml:"Birthday"`
-									Gender                   string `xml:"Gender"`
-									FirstName                string `xml:"FirstName"`
-									LastName                 string `xml:"LastName"`
-									MiddleName               string `xml:"MiddleName"`
-									AddressOfActualResidence string `xml:"AddressOfActualResidence"`
-									PlaceOfStudyOrWork       string `xml:"PlaceOfStudyOrWork"`
-								} `xml:"Patient"`
-								HasSymptomsCOVID                      string `xml:"HasSymptomsCOVID"`
-								AccordingToEpidemiologicalIndications struct {
-									Text string `xml:",chardata"`
-									Type string `xml:"Type"`
-								} `xml:"AccordingToEpidemiologicalIndications"`
-								ForThePurposeOfEpidemiologicalSurveillance struct {
-									Text      string `xml:",chardata"`
-									Type      string `xml:"Type"`
-									Other     string `xml:"Other"`
-									Diagnosis string `xml:"Diagnosis"`
-								} `xml:"ForThePurposeOfEpidemiologicalSurveillance"`
-								ForPreventivePurposes struct {
-									Text  string `xml:",chardata"`
-									Type  string `xml:"Type"`
-									Other string `xml:"Other"`
-								} `xml:"ForPreventivePurposes"`
-								ProbeStatus     string `xml:"ProbeStatus"`
-								CollectedTime   string `xml:"CollectedTime"`
-								ProtocolDate    string `xml:"ProtocolDate"`
-								ResearchResults string `xml:"ResearchResults"`
-								CreatedAt       string `xml:"CreatedAt"`
-							} `xml:"covid"`
+							Covid []CovidResult`xml:"covid"`
 						} `xml:"result"`
 					} `xml:"data"`
 				} `xml:"responseData"`
 			} `xml:"response"`
 		} `xml:"SendMessageResponse"`
 	} `xml:"Body"`
+}
+
+type CovidResult struct{
+	Text    string `xml:",chardata"`
+	Key     string `xml:"Key"`
+	Patient struct {
+		Text                     string `xml:",chardata"`
+		IIN                      string `xml:"IIN"`
+		IsResident               string `xml:"IsResident"`
+		Birthday                 string `xml:"Birthday"`
+		Gender                   string `xml:"Gender"`
+		FirstName                string `xml:"FirstName"`
+		LastName                 string `xml:"LastName"`
+		MiddleName               string `xml:"MiddleName"`
+		AddressOfActualResidence string `xml:"AddressOfActualResidence"`
+		PlaceOfStudyOrWork       string `xml:"PlaceOfStudyOrWork"`
+	} `xml:"Patient"`
+	HasSymptomsCOVID                      string `xml:"HasSymptomsCOVID"`
+	AccordingToEpidemiologicalIndications struct {
+		Text string `xml:",chardata"`
+		Type string `xml:"Type"`
+	} `xml:"AccordingToEpidemiologicalIndications"`
+	ForThePurposeOfEpidemiologicalSurveillance struct {
+		Text      string `xml:",chardata"`
+		Type      string `xml:"Type"`
+		Other     string `xml:"Other"`
+		Diagnosis string `xml:"Diagnosis"`
+	} `xml:"ForThePurposeOfEpidemiologicalSurveillance"`
+	ForPreventivePurposes struct {
+		Text  string `xml:",chardata"`
+		Type  string `xml:"Type"`
+		Other string `xml:"Other"`
+	} `xml:"ForPreventivePurposes"`
+	ProbeStatus     string `xml:"ProbeStatus"`
+	CollectedTime   string `xml:"CollectedTime"`
+	ProtocolDate    string `xml:"ProtocolDate"`
+	ResearchResults string `xml:"ResearchResults"`
+	CreatedAt       string `xml:"CreatedAt"`
 }

@@ -1,9 +1,9 @@
 package service
 
 import (
-	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/repository"
+	"kz.nitec.digidocs.pcr/pkg/utils"
 )
 
 type Services struct {
@@ -14,6 +14,7 @@ type Services struct {
 type DocumentService interface {
 	GetServiceInfoByCode() (*models.Service, error)
 	GetDocInfoByCode() (*models.Document, error)
+	BuildDocumentResponse(doc *models.Document,soap *models.SoapResponse) (*models.IssuedDigiDoc,error)
 }
 
 type ShepService interface {
@@ -23,13 +24,13 @@ type ShepService interface {
 
 type Deps struct {
 	Repos      *repository.Repositories
-	ShepConfig *config.Shep
-	PcrConfig  *config.Pcr
+	ShepConfig *utils.Shep
+	PcrConfig  *utils.Pcr
 }
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: newPcrCertificateService(deps.Repos.PcrCertificate, deps.ShepConfig, deps.PcrConfig.Code),
-		DocumentService:       NewDocumentService(deps.Repos.PcrCertificate, deps.PcrConfig),
+		PcrCertificateService: newPcrCertificateService(deps.ShepConfig, deps.PcrConfig.Code),
+		DocumentService:       newDocumentService(deps.Repos.PcrCertificate, deps.PcrConfig),
 	}
 }

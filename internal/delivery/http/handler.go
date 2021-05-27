@@ -5,6 +5,7 @@ import (
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/service"
 	logs "kz.nitec.digidocs.pcr/pkg/logger"
+	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
 )
@@ -40,16 +41,28 @@ func Pong(c *gin.Context) {
 
 func (h *Handler) PcrTaskManager(c *gin.Context) {
 	request := models.DocumentRequest{}
+
 	err := c.BindJSON(&request)
 	if err != nil {
-		logs.Logging(logs.GetStandardLog("ERROR", "Bad request", "pcr-app", "INFO", ""))
-		c.String(http.StatusInternalServerError, "Internal server error")
+		log.Println(err)
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcrtaskmananger", "","","","",12))
+	//TODO request logging
+
+	if utils.CheckIin(request.Iin){
+		// TODO error logging
+		log.Printf("Bad request: IIN %s doesn't correct\n", request.Iin)
+		c.String(http.StatusBadRequest, "Bad request: iin %s", request.Iin)
 		return
 	}
 
 	serviceInfo, err := h.Services.DocumentService.GetServiceInfoByCode()
 	if err != nil {
-		c.String(http.StatusInternalServerError, "Internal server error")
+		// TODO error logging
+		log.Println(err)
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}
 
@@ -57,10 +70,25 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 
 	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest, serviceInfo.URL)
 	if err != nil {
+		// TODO error logging
 		log.Println(err)
-		c.String(http.StatusInternalServerError, "Internal server error")
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}
 
-	c.JSON(http.StatusOK, data)
+	docInfo,err:=h.Services.DocumentService.GetDocInfoByCode()
+	if err!=nil{
+		// TODO error logging
+		log.Println(err)
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
+		return
+	}
+
+	//TODO docunent Request
+	docResponse,err:=h.Services.DocumentService.BuildDocumentResponse(docInfo,data)
+	if err!=nil{
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
+		return
+	}
+	c.JSON(http.StatusOK, docResponse)
 }
