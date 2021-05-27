@@ -36,8 +36,8 @@ type SoapResponse struct {
 						Type   string `xml:"type,attr"`
 						Q1     string `xml:"q1,attr"`
 						Result struct {
-							Text  string `xml:",chardata"`
-							Covid []CovidResult`xml:"covid"`
+							Text  string        `xml:",chardata"`
+							Covid []CovidResult `xml:"covid"`
 						} `xml:"result"`
 					} `xml:"data"`
 				} `xml:"responseData"`
@@ -46,7 +46,7 @@ type SoapResponse struct {
 	} `xml:"Body"`
 }
 
-type CovidResult struct{
+type CovidResult struct {
 	Text    string `xml:",chardata"`
 	Key     string `xml:"Key"`
 	Patient struct {

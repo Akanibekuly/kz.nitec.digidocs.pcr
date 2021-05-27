@@ -3,10 +3,10 @@ package app
 import (
 	"context"
 	"github.com/joho/godotenv"
-	delivery "kz.nitec.digidocs.pcr/internal/delivery/http"
+	"kz.nitec.digidocs.pcr/internal/config"
+	delivery "kz.nitec.digidocs.pcr/internal/delivery/http/v1"
 	"kz.nitec.digidocs.pcr/internal/repository"
 	"kz.nitec.digidocs.pcr/internal/service"
-	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
 	"os"
@@ -21,7 +21,7 @@ func Run() {
 		return
 	}
 
-	configs, err := utils.GetConfig()
+	configs, err := config.GetConfig()
 	if err != nil {
 		log.Println(err)
 		return
@@ -39,7 +39,7 @@ func Run() {
 	services := service.NewServices(service.Deps{
 		repos,
 		configs.Shep,
-		configs.Pcr,
+		configs.Services,
 	})
 
 	handlers := delivery.NewHandler(services)
@@ -52,6 +52,7 @@ func Run() {
 	go func() {
 		log.Println("Starting server on port", configs.App.Port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Println(err)
 			return
 		}
 	}()
@@ -67,6 +68,6 @@ func Run() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("Server forced to shutdown:", err)
+		log.Println("Server forced to shutdown:", err)
 	}
 }

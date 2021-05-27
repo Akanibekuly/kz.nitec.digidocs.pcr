@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"io/ioutil"
+	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
-	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
 	"time"
@@ -25,11 +25,11 @@ const (
 )
 
 type PcrCertificateService struct {
-	conf *utils.Shep
+	conf *config.Shep
 	code string
 }
 
-func newPcrCertificateService(conf *utils.Shep, code string) *PcrCertificateService {
+func newPcrCertificateService(conf *config.Shep, code string) *PcrCertificateService {
 	return &PcrCertificateService{
 		conf, code,
 	}

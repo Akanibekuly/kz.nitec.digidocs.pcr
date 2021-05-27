@@ -11,30 +11,30 @@ func CheckIin(iin string) bool {
 		}
 	}
 
-	month:=Atoi(iin[2:4])
+	month := strToInt(iin[2:4])
 	if month < 0 || month > 12 {
 		return false
 	}
 
-	day:=Atoi(iin[4:6])
+	day := strToInt(iin[4:6])
 	if day < 0 || day > 31 {
 		return false
 	}
 
 	// second faset
-	cent := Atoi(iin[6:7])
+	cent := strToInt(iin[6:7])
 	if cent < 1 || cent > 6 {
 		return false
 	}
 
 	// third faset
-	uniq:= Atoi(iin[7:11])
+	uniq := strToInt(iin[7:11])
 	if uniq < 0 {
 		return false
 	}
 
 	//control sum
-	contSum:= Atoi(iin[11:])
+	contSum := strToInt(iin[11:])
 
 	//
 	b1 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}
@@ -58,12 +58,11 @@ func CheckIin(iin string) bool {
 	return true
 }
 
-
-func Atoi(str string) int{
-	result:=0
-	for i:=range str{
-		result*=10
-		result+=int(str[i]-48)
+func strToInt(str string) int {
+	result := 0
+	for i := range str {
+		result *= 10
+		result += int(str[i] - 48)
 	}
 	return result
 }

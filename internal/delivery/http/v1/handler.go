@@ -14,17 +14,13 @@ type Handler struct {
 	Services *service.Services
 }
 
-func NewHandler(services *service.Services) *Handler {
+func NewHandler(services *service.Services) models.Handler {
 	return &Handler{services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.Default()
 
-	router.Use(
-		gin.Recovery(),
-		gin.Logger(),
-	)
 	router.GET("/ping", Pong)
 
 	pcr := router.Group("/digilocker/pcr-cert/api")
@@ -44,14 +40,14 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 
 	err := c.BindJSON(&request)
 	if err != nil {
-		log.Println(err)
+		log.Printf("validation error %s", err)
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcrtaskmananger", "","","","",12))
+	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcrtaskmananger", "", "", "", "", 12))
 	//TODO request logging
 
-	if utils.CheckIin(request.Iin){
+	if !utils.CheckIin(request.Iin) {
 		// TODO error logging
 		log.Printf("Bad request: IIN %s doesn't correct\n", request.Iin)
 		c.String(http.StatusBadRequest, "Bad request: iin %s", request.Iin)
@@ -76,8 +72,8 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		return
 	}
 
-	docInfo,err:=h.Services.DocumentService.GetDocInfoByCode()
-	if err!=nil{
+	docInfo, err := h.Services.DocumentService.GetDocInfoByCode()
+	if err != nil {
 		// TODO error logging
 		log.Println(err)
 		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
@@ -85,8 +81,8 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 	}
 
 	//TODO docunent Request
-	docResponse,err:=h.Services.DocumentService.BuildDocumentResponse(docInfo,data)
-	if err!=nil{
+	docResponse, err := h.Services.DocumentService.BuildDocumentResponse(docInfo, data)
+	if err != nil {
 		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}

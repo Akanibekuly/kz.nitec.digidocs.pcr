@@ -34,9 +34,9 @@ type DocCommon struct {
 }
 
 type DocPerson struct {
-	Iin       string
-	FirstName string
-	LastName  string
+	Iin        string
+	FirstName  string
+	LastName   string
 	MiddleName string
 }
 
