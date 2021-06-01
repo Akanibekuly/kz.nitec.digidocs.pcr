@@ -38,22 +38,31 @@ import (
 
 func TestGetConfigAllOK(t *testing.T) {
 	envs := map[string]string{
-		"APP__MODE":        "debug",
-		"APP__PORT":        ":8080",
-		"SHEP_LOGIN":       "login",
-		"SHEP_PASSWORD":    "password",
-		"SHEP_ENDPOINT":    "http://127.0.0.1:9012/bip-sync/",
-		"SENDER_LOGIN":     "mgov",
-		"SENDER_PASSWORD":  "password",
-		"SHEP_RETRY_COUNT": "1",
-		"DB_DIALECT":       "postgres",
-		"DB_URI":           "192.168.127.1",
-		"DB_PORT":          "8080",
-		"DB_LOGIN":         "login",
-		"DB_PASSWORD":      "login",
-		"DB_NAME":          "digilocker",
-		"PCR_CODE":         "PCR_CERTIFICATE",
-		"PCR_NAME":         "PcrCertificate",
+		"APP__MODE":            "debug",
+		"APP__PORT":            ":8080",
+		"SHEP_LOGIN":           "login",
+		"SHEP_PASSWORD":        "password",
+		"SHEP_ENDPOINT":        "http://127.0.0.1:9012/bip-sync/",
+		"SENDER_LOGIN":         "mgov",
+		"SENDER_PASSWORD":      "password",
+		"SHEP_RETRY_COUNT":     "1",
+		"DB_DIALECT":           "postgres",
+		"DB_URI":               "192.168.127.1",
+		"DB_PORT":              "8080",
+		"DB_LOGIN":             "login",
+		"DB_PASSWORD":          "login",
+		"DB_NAME":              "digilocker",
+		"PCR_CODE":             "PCR_CERTIFICATE",
+		"PCR_NAME":             "PcrCertificate",
+		"ENVELOPE":             "Envelope",
+		"ENVELOP_SCHEMA":       "something",
+		"SEND_MESSAGE_XMLNS":   "v10/Types",
+		"COVID_RESPONSE_XLMNS": "SyncCha",
+		"DIGILOCKER_XLMNS":     "documentResponse",
+		"XSI_XMLNS_SCEMA":      "XMLSchema-instance",
+		"COVID_REQUEST_TYPE":   "CovidRequest",
+		"SENDER_CODE":          "something",
+		"COVID_REQUEST_XLMNS":  "Request",
 	}
 
 	for k, v := range envs {
@@ -83,6 +92,15 @@ func TestGetConfigAllOK(t *testing.T) {
 		Services: &Services{
 			PcrCertificateCode:        "PCR_CERTIFICATE",
 			PcrCertificateDocInfoCode: "PcrCertificate",
+			ENVELOPE:                  "Envelope",
+			ENVELOP_SCHEMA:            "something",
+			SEND_MESSAGE_XMLNS:        "v10/Types",
+			COVID_RESPONSE_XLMNS:      "SyncCha",
+			DIGILOCKER_XLMNS:          "documentResponse",
+			XSI_XMLNS_SCEMA:           "XMLSchema-instance",
+			COVID_REQUEST_TYPE:        "CovidRequest",
+			SENDER_CODE:               "something",
+			COVID_REQUEST_XLMNS:       "Request",
 		},
 	}
 
@@ -106,37 +124,45 @@ func TestGetConfigEmptyEnv(t *testing.T) {
 
 func TestGetConfigDbPortIsNotInt(t *testing.T) {
 	envs := map[string]string{
-		"APP__MODE":        "debug",
-		"APP__PORT":        ":8080",
-		"SHEP_LOGIN":       "login",
-		"SHEP_PASSWORD":    "password",
-		"SHEP_ENDPOINT":    "http://127.0.0.1:9012/bip-sync/",
-		"SENDER_LOGIN":     "mgov",
-		"SENDER_PASSWORD":  "password",
-		"SHEP_RETRY_COUNT": "1",
-		"DB_DIALECT":       "postgres",
-		"DB_URI":           "192.168.127.1",
-		"DB_PORT":          "something",
-		"DB_LOGIN":         "login",
-		"DB_PASSWORD":      "login",
-		"DB_NAME":          "digilocker",
-		"PCR_CODE":         "PCR_CERTIFICATE",
-		"PCR_NAME":         "PcrCertificate",
+		"APP__MODE":            "debug",
+		"APP__PORT":            ":8080",
+		"SHEP_LOGIN":           "login",
+		"SHEP_PASSWORD":        "password",
+		"SHEP_ENDPOINT":        "http://127.0.0.1:9012/bip-sync/",
+		"SENDER_LOGIN":         "mgov",
+		"SENDER_PASSWORD":      "password",
+		"SHEP_RETRY_COUNT":     "1",
+		"DB_DIALECT":           "postgres",
+		"DB_URI":               "192.168.127.1",
+		"DB_PORT":              "something",
+		"DB_LOGIN":             "login",
+		"DB_PASSWORD":          "login",
+		"DB_NAME":              "digilocker",
+		"PCR_CODE":             "PCR_CERTIFICATE",
+		"PCR_NAME":             "PcrCertificate",
+		"ENVELOPE":             "Envelope",
+		"ENVELOP_SCHEMA":       "something",
+		"SEND_MESSAGE_XMLNS":   "v10/Types",
+		"COVID_RESPONSE_XLMNS": "SyncCha",
+		"DIGILOCKER_XLMNS":     "documentResponse",
+		"XSI_XMLNS_SCEMA":      "XMLSchema-instance",
+		"COVID_REQUEST_TYPE":   "CovidRequest",
+		"SENDER_CODE":          "something",
+		"COVID_REQUEST_XLMNS":  "Request",
 	}
 
 	for k, v := range envs {
 		os.Setenv(k, v)
 	}
 
-
 	result, err := GetConfig()
 
 	assert := assert.New(t)
 	assert.Nil(result)
-	assert.Equal(err,&strconv.NumError{
+	assert.Equal(err, &strconv.NumError{
 		Func: "Atoi",
-		Num: "something",
-		Err: fmt.Errorf("invalid syntax"),
+		Num:  "something",
+		Err:  fmt.Errorf("invalid syntax"),
 	})
 
 	for k, _ := range envs {
@@ -146,37 +172,45 @@ func TestGetConfigDbPortIsNotInt(t *testing.T) {
 
 func TestGetConfigShepRetryCountIsNotInt(t *testing.T) {
 	envs := map[string]string{
-		"APP__MODE":        "debug",
-		"APP__PORT":        ":8080",
-		"SHEP_LOGIN":       "login",
-		"SHEP_PASSWORD":    "password",
-		"SHEP_ENDPOINT":    "http://127.0.0.1:9012/bip-sync/",
-		"SENDER_LOGIN":     "mgov",
-		"SENDER_PASSWORD":  "password",
-		"SHEP_RETRY_COUNT": "something",
-		"DB_DIALECT":       "postgres",
-		"DB_URI":           "192.168.127.1",
-		"DB_PORT":          "8080",
-		"DB_LOGIN":         "login",
-		"DB_PASSWORD":      "login",
-		"DB_NAME":          "digilocker",
-		"PCR_CODE":         "PCR_CERTIFICATE",
-		"PCR_NAME":         "PcrCertificate",
+		"APP__MODE":            "debug",
+		"APP__PORT":            ":8080",
+		"SHEP_LOGIN":           "login",
+		"SHEP_PASSWORD":        "password",
+		"SHEP_ENDPOINT":        "http://127.0.0.1:9012/bip-sync/",
+		"SENDER_LOGIN":         "mgov",
+		"SENDER_PASSWORD":      "password",
+		"SHEP_RETRY_COUNT":     "something",
+		"DB_DIALECT":           "postgres",
+		"DB_URI":               "192.168.127.1",
+		"DB_PORT":              "8080",
+		"DB_LOGIN":             "login",
+		"DB_PASSWORD":          "login",
+		"DB_NAME":              "digilocker",
+		"PCR_CODE":             "PCR_CERTIFICATE",
+		"PCR_NAME":             "PcrCertificate",
+		"ENVELOPE":             "Envelope",
+		"ENVELOP_SCHEMA":       "something",
+		"SEND_MESSAGE_XMLNS":   "v10/Types",
+		"COVID_RESPONSE_XLMNS": "SyncCha",
+		"DIGILOCKER_XLMNS":     "documentResponse",
+		"XSI_XMLNS_SCEMA":      "XMLSchema-instance",
+		"COVID_REQUEST_TYPE":   "CovidRequest",
+		"SENDER_CODE":          "something",
+		"COVID_REQUEST_XLMNS":  "Request",
 	}
 
 	for k, v := range envs {
 		os.Setenv(k, v)
 	}
 
-
 	result, err := GetConfig()
 
 	assert := assert.New(t)
 	assert.Nil(result)
-	assert.Equal(err,&strconv.NumError{
+	assert.Equal(err, &strconv.NumError{
 		Func: "Atoi",
-		Num: "something",
-		Err: fmt.Errorf("invalid syntax"),
+		Num:  "something",
+		Err:  fmt.Errorf("invalid syntax"),
 	})
 
 	for k, _ := range envs {

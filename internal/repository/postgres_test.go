@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewPostgresDBOk(t *testing.T) {
-	conf:=&config.DBConf{
+	conf := &config.DBConf{
 		"postgres",
 		"127.0.0.1",
 		5432,
@@ -17,13 +17,13 @@ func TestNewPostgresDBOk(t *testing.T) {
 		"db",
 	}
 
-	_,err:=NewPostgresDB(conf)
-	assert:=assert.New(t)
+	_, err := NewPostgresDB(conf)
+	assert := assert.New(t)
 	assert.Nil(err)
 }
 
 func TestNewPostgresDBWithError(t *testing.T) {
-	conf:=&config.DBConf{
+	conf := &config.DBConf{
 		"error",
 		"127.0.0.1",
 		5432,
@@ -32,7 +32,7 @@ func TestNewPostgresDBWithError(t *testing.T) {
 		"db",
 	}
 
-	_,err:=NewPostgresDB(conf)
-	assert:=assert.New(t)
-	assert.Equal(fmt.Errorf("sql: unknown driver \"error\" (forgotten import?)"),err)
+	_, err := NewPostgresDB(conf)
+	assert := assert.New(t)
+	assert.Equal(fmt.Errorf("sql: unknown driver \"error\" (forgotten import?)"), err)
 }

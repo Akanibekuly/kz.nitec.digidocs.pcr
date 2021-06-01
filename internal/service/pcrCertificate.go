@@ -15,21 +15,21 @@ import (
 )
 
 type PcrCertificateService struct {
-	repo repository.ServiceRepo
-	conf *config.Shep
+	repo        repository.ServiceRepo
+	conf        *config.Shep
 	serviceConf *config.Services
 }
 
-func newPcrCertificateService(repo repository.ServiceRepo,conf *config.Shep, serviceConf *config.Services) *PcrCertificateService {
+func newPcrCertificateService(repo repository.ServiceRepo, conf *config.Shep, serviceConf *config.Services) *PcrCertificateService {
 	return &PcrCertificateService{
 		repo, conf, serviceConf,
 	}
 }
 
 func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest) (*models.SoapResponse, error) {
-	url,err:=pcr.repo.GetServiceUrlByCode(pcr.serviceConf.PcrCertificateCode)
-	if err!=nil{
-		return nil,err
+	url, err := pcr.repo.GetServiceUrlByCode(pcr.serviceConf.PcrCertificateCode)
+	if err != nil {
+		return nil, err
 	}
 	b, err := xml.Marshal(soapRequest)
 	if err != nil {
@@ -63,10 +63,10 @@ func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest) (*m
 	return shepResponse, nil
 }
 
-func (pcr *PcrCertificateService) NewSoapRequest(soapRequest *models.DocumentRequest) (*models.SoapRequest,error) {
-	serviceId,err:=pcr.repo.GetServiceIdByCode(pcr.serviceConf.PcrCertificateCode)
-	if err!=nil{
-		return nil,err
+func (pcr *PcrCertificateService) NewSoapRequest(soapRequest *models.DocumentRequest) (*models.SoapRequest, error) {
+	serviceId, err := pcr.repo.GetServiceIdByCode(pcr.serviceConf.PcrCertificateCode)
+	if err != nil {
+		return nil, err
 	}
 	return &models.SoapRequest{
 		XMLName: xml.Name{Local: pcr.serviceConf.ENVELOPE},
@@ -104,5 +104,5 @@ func (pcr *PcrCertificateService) NewSoapRequest(soapRequest *models.DocumentReq
 				},
 			},
 		},
-	},nil
+	}, nil
 }

@@ -10,7 +10,6 @@ type Services struct {
 	PcrCertificateService ShepService
 }
 
-
 type ShepService interface {
 	GetBySoap(*models.SoapRequest) (*models.SoapResponse, error)
 	NewSoapRequest(*models.DocumentRequest) (*models.SoapRequest, error)
@@ -24,6 +23,6 @@ type Deps struct {
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: newPcrCertificateService(deps.Repos.ServiceRepo ,deps.ShepConfig, deps.PcrConfig),
+		PcrCertificateService: newPcrCertificateService(deps.Repos.ServiceRepo, deps.ShepConfig, deps.PcrConfig),
 	}
 }

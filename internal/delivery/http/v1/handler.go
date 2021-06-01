@@ -54,10 +54,11 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		return
 	}
 
-	soapRequest,err := h.Services.PcrCertificateService.NewSoapRequest(&request)
-	if err!=nil{
+	soapRequest, err := h.Services.PcrCertificateService.NewSoapRequest(&request)
+	if err != nil {
+		// TODO error logging
 		log.Println(err)
-		c.String(http.StatusInternalServerError, "Internal server error")
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}
 
