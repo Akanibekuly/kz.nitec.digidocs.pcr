@@ -8,34 +8,29 @@ import (
 	"io/ioutil"
 	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
+	"kz.nitec.digidocs.pcr/internal/repository"
 	"log"
 	"net/http"
 	"time"
 )
 
-const (
-	ENVELOPE             = "Envelope"
-	ENVELOP_SCHEMA       = "http://schemas.xmlsoap.org/soap/envelope/"
-	SEND_MESSAGE_XMLNS   = "http://bip.bee.kz/SyncChannel/v10/Types"
-	COVID_RESPONSE_XLMNS = "http://api.nce.kz/SyncChannel/v1/Types/CovidResponse"
-	DIGILOCKER_XLMNS     = "http://digilocker.gov.kz/documentResponse/type/pcrcert"
-	COVID_REQUEST_XLMNS  = "http://api.nce.kz/SyncChannel/v1/Types/CovidRequest"
-	XSI_XMLNS_SCEMA      = "http://www.w3.org/2001/XMLSchema-instance"
-	COVID_REQUEST_TYPE   = "ns6:CovidRequest"
-)
-
 type PcrCertificateService struct {
+	repo repository.ServiceRepo
 	conf *config.Shep
-	code string
+	serviceConf *config.Services
 }
 
-func newPcrCertificateService(conf *config.Shep, code string) *PcrCertificateService {
+func newPcrCertificateService(repo repository.ServiceRepo,conf *config.Shep, serviceConf *config.Services) *PcrCertificateService {
 	return &PcrCertificateService{
-		conf, code,
+		repo, conf, serviceConf,
 	}
 }
 
-func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest, url string) (*models.SoapResponse, error) {
+func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest) (*models.SoapResponse, error) {
+	url,err:=pcr.repo.GetServiceUrlByCode(pcr.serviceConf.PcrCertificateCode)
+	if err!=nil{
+		return nil,err
+	}
 	b, err := xml.Marshal(soapRequest)
 	if err != nil {
 		return nil, err
@@ -68,18 +63,22 @@ func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest, url
 	return shepResponse, nil
 }
 
-func (pcr *PcrCertificateService) NewSoapRequest(request *models.DocumentRequest, serviceId string) *models.SoapRequest {
+func (pcr *PcrCertificateService) NewSoapRequest(soapRequest *models.DocumentRequest) (*models.SoapRequest,error) {
+	serviceId,err:=pcr.repo.GetServiceIdByCode(pcr.serviceConf.PcrCertificateCode)
+	if err!=nil{
+		return nil,err
+	}
 	return &models.SoapRequest{
-		XMLName: xml.Name{Local: ENVELOPE},
+		XMLName: xml.Name{Local: pcr.serviceConf.ENVELOPE},
 		Text:    "",
-		Xmlns:   ENVELOP_SCHEMA,
+		Xmlns:   pcr.serviceConf.ENVELOP_SCHEMA,
 		Body: &models.BodyRequest{
 			Text: "",
 			SendMessage: &models.SendMessageRequest{
 				Text: "",
-				Ns2:  SEND_MESSAGE_XMLNS,
-				Ns3:  COVID_RESPONSE_XLMNS,
-				Ns4:  DIGILOCKER_XLMNS,
+				Ns2:  pcr.serviceConf.SEND_MESSAGE_XMLNS,
+				Ns3:  pcr.serviceConf.COVID_RESPONSE_XLMNS,
+				Ns4:  pcr.serviceConf.DIGILOCKER_XLMNS,
 				Req: &models.Request{
 					Text: "",
 					ReqInfo: &models.RequestInfo{
@@ -94,10 +93,10 @@ func (pcr *PcrCertificateService) NewSoapRequest(request *models.DocumentRequest
 					ReqData: &models.RequestData{
 						Text: "",
 						Data: &models.Data{
-							Ns6:      COVID_REQUEST_XLMNS,
-							Xsi:      XSI_XMLNS_SCEMA,
-							Type:     COVID_REQUEST_TYPE,
-							Iin:      request.Iin,
+							Ns6:      pcr.serviceConf.COVID_REQUEST_XLMNS,
+							Xsi:      pcr.serviceConf.XSI_XMLNS_SCEMA,
+							Type:     pcr.serviceConf.COVID_REQUEST_TYPE,
+							Iin:      soapRequest.Iin,
 							Login:    pcr.conf.ShepLogin,
 							Password: pcr.conf.ShepPassword,
 						},
@@ -105,5 +104,5 @@ func (pcr *PcrCertificateService) NewSoapRequest(request *models.DocumentRequest
 				},
 			},
 		},
-	}
+	},nil
 }

@@ -44,7 +44,7 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcrtaskmananger", "", "", "", "", 12))
+	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcr_task_mananger", "", "", "", "", 12))
 	//TODO request logging
 
 	if !utils.CheckIin(request.Iin) {
@@ -54,7 +54,14 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		return
 	}
 
-	serviceInfo, err := h.Services.DocumentService.GetServiceInfoByCode()
+	soapRequest,err := h.Services.PcrCertificateService.NewSoapRequest(&request)
+	if err!=nil{
+		log.Println(err)
+		c.String(http.StatusInternalServerError, "Internal server error")
+		return
+	}
+
+	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest)
 	if err != nil {
 		// TODO error logging
 		log.Println(err)
@@ -62,29 +69,5 @@ func (h *Handler) PcrTaskManager(c *gin.Context) {
 		return
 	}
 
-	soapRequest := h.Services.PcrCertificateService.NewSoapRequest(&request, serviceInfo.ServiceId)
-
-	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest, serviceInfo.URL)
-	if err != nil {
-		// TODO error logging
-		log.Println(err)
-		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
-		return
-	}
-
-	docInfo, err := h.Services.DocumentService.GetDocInfoByCode()
-	if err != nil {
-		// TODO error logging
-		log.Println(err)
-		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
-		return
-	}
-
-	//TODO docunent Request
-	docResponse, err := h.Services.DocumentService.BuildDocumentResponse(docInfo, data)
-	if err != nil {
-		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
-		return
-	}
-	c.JSON(http.StatusOK, docResponse)
+	c.JSON(http.StatusOK, data)
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
-	"kz.nitec.digidocs.pcr/internal/service"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -58,19 +57,19 @@ func TestPong(t *testing.T) {
 	assert.Equal(string(p),"pong")
 }
 
-func TestHandler_PcrTaskManager(t *testing.T) {
-	services:=&service.Services{}
-	h:=NewHandler(services)
-
-	assert.New(t)
-	r:=gin.Default()
-	w:=httptest.NewRecorder()
-	w.Write()
-	c,err:=gin.CreateTestContext(w)
-	if err!=nil{
-		assert.Fail("Gin context error")
-	}
-	r.POST("/",h.PcrTaskManager())
-	req,_:=httptest.NewRecorder()
-
-}
+//func TestHandler_PcrTaskManager(t *testing.T) {
+//	services:=&service.Services{}
+//	h:=NewHandler(services)
+//
+//	assert.New(t)
+//	r:=gin.Default()
+//	w:=httptest.NewRecorder()
+//	w.Write()
+//	c,err:=gin.CreateTestContext(w)
+//	if err!=nil{
+//		assert.Fail("Gin context error")
+//	}
+//	r.POST("/",h.PcrTaskManager())
+//	req,_:=httptest.NewRecorder()
+//
+//}

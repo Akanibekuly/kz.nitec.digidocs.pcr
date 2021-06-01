@@ -40,6 +40,15 @@ type (
 	Services struct {
 		PcrCertificateCode        string
 		PcrCertificateDocInfoCode string
+		ENVELOPE             string
+		ENVELOP_SCHEMA       string
+		SEND_MESSAGE_XMLNS   string
+		COVID_RESPONSE_XLMNS string
+		DIGILOCKER_XLMNS     string
+		XSI_XMLNS_SCEMA      string
+		COVID_REQUEST_TYPE   string
+		SENDER_CODE          string
+		COVID_REQUEST_XLMNS string
 	}
 )
 
@@ -49,6 +58,7 @@ func GetConfig() (*MainConfig, error) {
 		"DB_DIALECT", "DB_URI", "DB_PORT", "DB_LOGIN", "DB_PASSWORD", "DB_NAME",
 		"SENDER_LOGIN", "SENDER_PASSWORD", "SHEP_LOGIN", "SHEP_PASSWORD", "SHEP_RETRY_COUNT",
 		"PCR_CODE", "PCR_NAME",
+		"ENVELOPE", "ENVELOP_SCHEMA", "SEND_MESSAGE_XMLNS", "COVID_RESPONSE_XLMNS", "DIGILOCKER_XLMNS", "XSI_XMLNS_SCEMA", "COVID_REQUEST_TYPE", "SENDER_CODE", "COVID_REQUEST_XLMNS",
 	}
 
 	for _, key := range envs {
@@ -90,6 +100,15 @@ func GetConfig() (*MainConfig, error) {
 		Services: &Services{
 			PcrCertificateCode:        os.Getenv("PCR_CODE"),
 			PcrCertificateDocInfoCode: os.Getenv("PCR_NAME"),
+			ENVELOPE:             os.Getenv("ENVELOPE"),
+			ENVELOP_SCHEMA:       os.Getenv("ENVELOP_SCHEMA"),
+			SEND_MESSAGE_XMLNS:   os.Getenv("SEND_MESSAGE_XMLNS"),
+			COVID_RESPONSE_XLMNS: os.Getenv("COVID_RESPONSE_XLMNS"),
+			DIGILOCKER_XLMNS:     os.Getenv("DIGILOCKER_XLMNS"),
+			XSI_XMLNS_SCEMA:      os.Getenv("XSI_XMLNS_SCEMA"),
+			COVID_REQUEST_TYPE:   os.Getenv("COVID_REQUEST_TYPE"),
+			SENDER_CODE:          os.Getenv("SENDER_CODE"),
+			COVID_REQUEST_XLMNS: os.Getenv("COVID_REQUEST_XLMNS"),
 		},
 	}, nil
 }

@@ -8,18 +8,12 @@ import (
 
 type Services struct {
 	PcrCertificateService ShepService
-	DocumentService       DocumentService
 }
 
-type DocumentService interface {
-	GetServiceInfoByCode() (*models.Service, error)
-	GetDocInfoByCode() (*models.Document, error)
-	BuildDocumentResponse(doc *models.Document, soap *models.SoapResponse) (*models.IssuedDigiDoc, error)
-}
 
 type ShepService interface {
-	GetBySoap(request *models.SoapRequest, url string) (*models.SoapResponse, error)
-	NewSoapRequest(*models.DocumentRequest, string) *models.SoapRequest
+	GetBySoap(*models.SoapRequest) (*models.SoapResponse, error)
+	NewSoapRequest(*models.DocumentRequest) (*models.SoapRequest, error)
 }
 
 type Deps struct {
@@ -30,7 +24,6 @@ type Deps struct {
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: newPcrCertificateService(deps.ShepConfig, deps.PcrConfig.PcrCertificateCode),
-		DocumentService:       newDocumentService(deps.Repos.PcrCertificate, deps.PcrConfig),
+		PcrCertificateService: newPcrCertificateService(deps.Repos.ServiceRepo ,deps.ShepConfig, deps.PcrConfig),
 	}
 }

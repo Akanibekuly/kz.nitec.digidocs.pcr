@@ -5,17 +5,19 @@ import (
 	"kz.nitec.digidocs.pcr/internal/models"
 )
 
-type PcrCertificate interface {
+type ServiceRepo interface {
 	GetServiceInfoByCode(code string) (*models.Service, error)
 	GetDocInfoByCode(code string) (*models.Document, error)
+	GetServiceIdByCode(code string) (string, error)
+	GetServiceUrlByCode(code string) (string, error)
 }
 
 type Repositories struct {
-	PcrCertificate
+	ServiceRepo
 }
 
 func NewRepositories(db *sql.DB) *Repositories {
 	return &Repositories{
-		NewPcrRepository(db),
+		NewServiceRepository(db),
 	}
 }
