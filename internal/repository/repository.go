@@ -6,10 +6,12 @@ import (
 )
 
 type ServiceRepo interface {
-	GetServiceInfoByCode(code string) (*models.Service, error)
-	GetDocInfoByCode(code string) (*models.Document, error)
 	GetServiceIdByCode(code string) (string, error)
 	GetServiceUrlByCode(code string) (string, error)
+}
+
+type BuildServiceRepo interface{
+	GetDocInfoByCode(code string) (*models.Document, error)
 }
 
 type Repositories struct {
