@@ -9,6 +9,7 @@ import (
 	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/repository"
+	"kz.nitec.digidocs.pcr/pkg/logger"
 	"log"
 	"net/http"
 	"time"
@@ -29,44 +30,44 @@ func newPcrCertificateService(repo repository.ServiceRepo, conf *config.Shep, se
 func (pcr *PcrCertificateService) GetBySoap(soapRequest *models.SoapRequest) (*models.SoapResponse, error) {
 	url, err := pcr.repo.GetServiceUrlByCode(pcr.serviceConf.PcrCertificateCode)
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 	b, err := xml.Marshal(soapRequest)
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(b))
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("could not read response body")
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	shepResponse := &models.SoapResponse{}
 	err = xml.Unmarshal(data, shepResponse)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
-	return shepResponse, nil
+	return shepResponse, logger.CreateMessageLog(err)
 }
 
 func (pcr *PcrCertificateService) NewSoapRequest(soapRequest *models.DocumentRequest) (*models.SoapRequest, error) {
 	serviceId, err := pcr.repo.GetServiceIdByCode(pcr.serviceConf.PcrCertificateCode)
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 	return &models.SoapRequest{
 		XMLName: xml.Name{Local: pcr.serviceConf.ENVELOPE},

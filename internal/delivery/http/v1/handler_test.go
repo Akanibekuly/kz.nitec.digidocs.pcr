@@ -4,6 +4,7 @@ package http
 
 import (
 	"bytes"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -13,7 +14,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"errors"
 )
 
 func TestPong(t *testing.T) {

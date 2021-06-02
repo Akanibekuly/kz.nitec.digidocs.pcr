@@ -76,7 +76,6 @@ func TestServiceRepository_GetServiceUrlByCodeWithError(t *testing.T) {
 	assert.Equal(serviceId, "")
 }
 
-
 func TestServiceRepository_GetDocInfoByCode(t *testing.T) {
 	db, mock := NewMock()
 	repo := NewServiceRepository(db)

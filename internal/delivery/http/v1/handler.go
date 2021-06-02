@@ -1,10 +1,11 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/service"
-	logs "kz.nitec.digidocs.pcr/pkg/logger"
+	"kz.nitec.digidocs.pcr/pkg/logger"
 	"kz.nitec.digidocs.pcr/pkg/utils"
 	"log"
 	"net/http"
@@ -44,31 +45,34 @@ func (h *Handler) TaskManager(c *gin.Context) {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	logs.Logging(logs.GetRequestLog("INFO", "incoming request", "pcr_certificate", "dev_pcr_task_mananger", "", "", "", "", 12))
-	//TODO request logging
+
+	logger.PrintLog("INFO", "PCR_TM", "", fmt.Sprintf("Request from %s with iin: %s", "RabbitMq", request.Iin))
 
 	if !utils.CheckIin(request.Iin) {
-		// TODO error logging
-		log.Printf("Bad request: IIN %s doesn't correct\n", request.Iin)
+		logger.PrintLog("ERROR", "PCR_TM", "", fmt.Sprintf("Bad request: IIN %s doesn't correct\n", request.Iin))
 		c.String(http.StatusBadRequest, "Bad request: iin %s", request.Iin)
 		return
 	}
 
 	soapRequest, err := h.Services.PcrCertificateService.NewSoapRequest(&request)
 	if err != nil {
-		// TODO error logging
-		log.Println(err)
+		logger.PrintLog("ERROR", "PCR-TM", "", err)
 		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}
 
-	data, err := h.Services.PcrCertificateService.GetBySoap(soapRequest)
+	soapResponse, err := h.Services.PcrCertificateService.GetBySoap(soapRequest)
 	if err != nil {
-		// TODO error logging
-		log.Println(err)
+		logger.PrintLog("ERROR", "PCR-TM", "", err)
 		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
 		return
 	}
 
-	c.JSON(http.StatusOK, data)
+	result, err := h.Services.BuildService.BuildDocumentResponse(soapResponse)
+	if err != nil {
+		logger.PrintLog("ERROR", "PCR-TM", "", err)
+		c.String(http.StatusInternalServerError, "Internal server error: %s", err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
 }

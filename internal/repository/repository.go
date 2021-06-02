@@ -16,10 +16,12 @@ type BuildServiceRepo interface {
 
 type Repositories struct {
 	ServiceRepo
+	BuildServiceRepo
 }
 
 func NewRepositories(db *sql.DB) *Repositories {
 	return &Repositories{
 		NewServiceRepository(db),
+		NewBuildServiceRepsoitory(db),
 	}
 }

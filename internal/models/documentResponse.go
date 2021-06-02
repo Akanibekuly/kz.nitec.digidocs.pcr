@@ -64,7 +64,7 @@ type PcrCertificate struct {
 	PlaceOfStudy     string
 	Phone            string
 	HasSymptomsCOVID string
-	ProtovolDate     string
+	ProtocolDate     string
 	CreateAt         string
 	ResearchResults  string
 }

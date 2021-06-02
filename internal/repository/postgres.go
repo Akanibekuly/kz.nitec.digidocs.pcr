@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"kz.nitec.digidocs.pcr/internal/config"
+	"kz.nitec.digidocs.pcr/pkg/logger"
 )
 
 func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
@@ -19,7 +20,7 @@ func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
 
 	db, err = sql.Open(cfg.Dialect, dbURI)
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	return db, nil
