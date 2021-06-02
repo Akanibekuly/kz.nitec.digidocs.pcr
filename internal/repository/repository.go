@@ -10,7 +10,7 @@ type ServiceRepo interface {
 	GetServiceUrlByCode(code string) (string, error)
 }
 
-type BuildServiceRepo interface{
+type BuildServiceRepo interface {
 	GetDocInfoByCode(code string) (*models.Document, error)
 }
 

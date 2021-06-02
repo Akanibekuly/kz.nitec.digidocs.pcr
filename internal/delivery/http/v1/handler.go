@@ -25,7 +25,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	pcr := router.Group("/digilocker/pcr-cert/api")
 	{
-		pcr.POST("/pcr-result", h.PcrTaskManager)
+		pcr.POST("/pcr-result", h.TaskManager)
 	}
 
 	return router
@@ -35,7 +35,7 @@ func Pong(c *gin.Context) {
 	c.String(http.StatusOK, "pong")
 }
 
-func (h *Handler) PcrTaskManager(c *gin.Context) {
+func (h *Handler) TaskManager(c *gin.Context) {
 	request := models.DocumentRequest{}
 
 	err := c.BindJSON(&request)

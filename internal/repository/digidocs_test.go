@@ -76,37 +76,6 @@ func TestServiceRepository_GetServiceUrlByCodeWithError(t *testing.T) {
 	assert.Equal(serviceId, "")
 }
 
-func TestServiceRepository_GetServiceInfoByCodeOk(t *testing.T) {
-	db, mock := NewMock()
-	repo := NewServiceRepository(db)
-
-	rows := sqlmock.NewRows([]string{"service_id", "url"}).AddRow("PersonPhoto", "url")
-	query := "SELECT service_id, url FROM service"
-	mock.ExpectQuery(query).WithArgs("PERSON_PHOTO").WillReturnRows(rows)
-
-	expResult := models.Service{
-		Code:      "PERSON_PHOTO",
-		ServiceId: "PersonPhoto",
-		URL:       "url",
-	}
-	result, err := repo.GetServiceInfoByCode("PERSON_PHOTO")
-	assert := assert.New(t)
-	assert.Nil(err)
-	assert.Equal(result, &expResult)
-}
-
-func TestServiceRepository_GetServiceInfoByCodeWithError(t *testing.T) {
-	db, mock := NewMock()
-	repo := NewServiceRepository(db)
-
-	query := "SELECT service_id, url FROM service"
-	mock.ExpectQuery(query).WithArgs("PERSON_PHOTO").WillReturnError(sql.ErrNoRows)
-
-	result, err := repo.GetServiceInfoByCode("PERSON_PHOTO")
-	assert := assert.New(t)
-	assert.Nil(result)
-	assert.Equal(err, sql.ErrNoRows)
-}
 
 func TestServiceRepository_GetDocInfoByCode(t *testing.T) {
 	db, mock := NewMock()
