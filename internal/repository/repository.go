@@ -15,8 +15,8 @@ type BuildServiceRepo interface {
 }
 
 type Repositories struct {
-	ServiceRepo
-	BuildServiceRepo
+	S ServiceRepo
+	B BuildServiceRepo
 }
 
 func NewRepositories(db *sql.DB) *Repositories {

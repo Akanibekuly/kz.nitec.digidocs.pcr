@@ -42,7 +42,7 @@ type DocPerson struct {
 
 type DocType struct {
 	Code string
-	I18Text
+	I18Text I18Text
 }
 
 type I18Text struct {

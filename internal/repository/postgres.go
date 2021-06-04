@@ -8,8 +8,6 @@ import (
 )
 
 func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
-	var db *sql.DB
-	var err error
 	dbURI := fmt.Sprintf("port=%d host=%s user=%s password=%s dbname=%s sslmode=disable",
 		cfg.Port,
 		cfg.Host,
@@ -18,7 +16,7 @@ func NewPostgresDB(cfg *config.DBConf) (*sql.DB, error) {
 		cfg.DBName,
 	)
 
-	db, err = sql.Open(cfg.Dialect, dbURI)
+	db, err := sql.Open(cfg.Dialect, dbURI)
 	if err != nil {
 		return nil, logger.CreateMessageLog(err)
 	}

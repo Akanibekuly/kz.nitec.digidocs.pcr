@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+	"kz.nitec.digidocs.pcr/internal/config"
 	"kz.nitec.digidocs.pcr/internal/models"
 	"kz.nitec.digidocs.pcr/internal/repository"
 	"kz.nitec.digidocs.pcr/pkg/logger"
@@ -9,16 +11,22 @@ import (
 
 type BuildService struct {
 	repo repository.BuildServiceRepo
+	conf *config.Services
 }
 
-func newBuildService(repo repository.BuildServiceRepo) *BuildService {
-	return &BuildService{repo: repo}
+func newBuildService(repo repository.BuildServiceRepo, conf *config.Services) *BuildService {
+	return &BuildService{repo: repo, conf: conf}
 }
 
 func (b *BuildService) BuildDocumentResponse(response *models.SoapResponse) (*models.IssuedDigiDoc, error) {
 	covidResult, err := getCovidResult(response.Body.SendMessageResponse.Response.ResponseData.Data.Result.Covid)
 	if err != nil {
 		return nil, logger.CreateMessageLog(err)
+	}
+
+	document,err:=b.repo.GetDocInfoByCode(b.conf.PcrCertificateDocInfoCode)
+	if err!=nil{
+		return nil,logger.CreateMessageLog(err)
 	}
 
 	common := models.DocCommon{
@@ -28,8 +36,15 @@ func (b *BuildService) BuildDocumentResponse(response *models.SoapResponse) (*mo
 			LastName:   covidResult.Patient.LastName,
 			MiddleName: covidResult.Patient.MiddleName,
 		},
-		DocType: models.DocType{},
-		DocUri:  "",
+		DocType: models.DocType{
+			Code: document.Code,
+			I18Text: models.I18Text{
+				NameEn: document.NameEn,
+				NameRu: document.NameRu,
+				NameKk: document.NameKK,
+			},
+		},
+		DocUri:  fmt.Sprintf("%s:%s", document.Code, covidResult.Key),
 	}
 
 	isResident := "Ия/Да"

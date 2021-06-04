@@ -7,7 +7,6 @@ import (
 	"kz.nitec.digidocs.pcr/internal/service"
 	"kz.nitec.digidocs.pcr/pkg/logger"
 	"kz.nitec.digidocs.pcr/pkg/utils"
-	"log"
 	"net/http"
 )
 
@@ -41,7 +40,7 @@ func (h *Handler) TaskManager(c *gin.Context) {
 
 	err := c.BindJSON(&request)
 	if err != nil {
-		log.Printf("validation error %s", err)
+		logger.PrintLog("ERROR", "PCR_TM", "", logger.CreateMessageLog(err))
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}

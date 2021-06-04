@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"kz.nitec.digidocs.pcr/pkg/logger"
 	"os"
 	"strconv"
 )
@@ -63,18 +64,18 @@ func GetConfig() (*MainConfig, error) {
 
 	for _, key := range envs {
 		if val, exists := os.LookupEnv(key); !exists || val == "" {
-			return nil, fmt.Errorf("Env with key %s doesn't exists ", key)
+			return nil, logger.CreateMessageLog(fmt.Errorf("Env with key %s doesn't exists ", key))
 		}
 	}
 
 	port, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	retryCount, err := strconv.Atoi(os.Getenv("SHEP_RETRY_COUNT"))
 	if err != nil {
-		return nil, err
+		return nil, logger.CreateMessageLog(err)
 	}
 
 	return &MainConfig{

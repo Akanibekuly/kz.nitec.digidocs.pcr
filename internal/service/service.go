@@ -28,7 +28,7 @@ type Deps struct {
 
 func NewServices(deps Deps) *Services {
 	return &Services{
-		PcrCertificateService: newPcrCertificateService(deps.Repos.ServiceRepo, deps.ShepConfig, deps.PcrConfig),
-		BuildService:          newBuildService(deps.Repos.BuildServiceRepo),
+		PcrCertificateService: newPcrCertificateService(deps.Repos.S, deps.ShepConfig, deps.PcrConfig),
+		BuildService:          newBuildService(deps.Repos.B),
 	}
 }
